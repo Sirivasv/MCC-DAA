@@ -171,6 +171,182 @@ Eso quiere decir que existe una constante $C>0$ y un $n_0$ tal que para toda  $n
  \begin{equation}
 	T(n)-T(n/2) \leq C
  \end{equation}
+Revisemos las siguientes ecuaciones:
+\begin{equation}\label{eq:frst}
+T(n)-T(n/2) \leq C_1
+\end{equation}
+\begin{equation}\label{eq:scnd}
+T(n/2)-T(n/4) \leq C_2
+\end{equation}
+Lo que se representa en \eqref{eq:frst} y \eqref{eq:scnd} es que para todo $n$ en los dos primeros niveles de la recurrencia, la constante no necesariamente es la misma puesto que solo decimos que es de orden $O(1)$.\\
+De igual forma el $n_0$ donde se empieza a cumplir la desigualdad puede ser distinto también, sin embargo podemos tomar los valores de $n$ mayores al mayor $n_0$ de ambos.\\
+Probemos ahora sumar \eqref{eq:frst} y \eqref{eq:scnd}.
+\begin{equation}\label{eq:thrd}
+\begin{split}
+T(n)-T(n/2) + T(n/2) - T(n/4) & \leq C_1 + C_2 \\
+T(n) - T(n/4) & \leq C_1 + C_2 \\
+\end{split}
+\end{equation}
+Si realizamos el mismo proceso $j$ veces llegamos a:
+\begin{equation}\label{eq:frth}
+T(n)-T(n/(2^j)) \leq \sum_{i=1}^{j}{C_i}
+\end{equation}
+Definamos una función $f(n,j)$ que realice ese proceso:
+\begin{equation}\label{eq:ffth}
+f(n,j) = T(n)-T(n/(2^j))
+\end{equation}
+$f(n,j)$ cumple que:
+\begin{equation}\label{eq:sxth}
+f(n,j) \leq \sum_{i=1}^{j}{C_i}
+\end{equation}
+Ahora si todas las constantes $C_i$ fueran la misma podríamos reducir la ecuación. Sin embargo podemos tomar a $C_m$ siendo la mayor constante $C_i$ para la cual se cumple que:
+\begin{equation}\label{eq:sep}
+\begin{split}
+	f(n,j) & \leq \sum_{i=1}^{j}{C_m} \\
+	f(n,j) & \leq jC_m \\
+\end{split}
+\end{equation}
+Con $N$ siendo el mayor $n_0$ de las $j$ evaluaciones y con la constante $C_m$ podemos decir que para todo $n\geq N$ la desigualdad \eqref{eq:sep} se cumple y por lo tanto $f(n,j)$ es de orden $O(j)$.
+Ahora tomemos la $f(n,j)$ que es de orden $O(logn)$. Es decir a $f(n,logn)$.
+\begin{equation}\label{eq:oct}
+\begin{split}
+	f(n,logn) & \leq log(n)C_m \\
+	T(n)-T(n/(2^{logn}) & \leq log(n)C_m\\
+	T(n)-T(n/n) & \leq log(n)C_m\\
+	T(n)-T(1) & \leq log(n)C_m\\
+\end{split}
+\end{equation}
+Posteriormente, como $T(1)=c$ obtenemos:
+\begin{equation}\label{eq:nn}
+\begin{split}
+T(n)-c & \leq log(n)C_m\\
+T(n)-c+c& \leq log(n)C_m +c\\
+T(n) & \leq log(n)C_m + c\\
+\end{split}
+\end{equation}
+Con $\eqref{eq:nn}$ podemos decir que $T(n)$ es de orden $O(log(n)C_m + c)$, y reduciendo $T(n)$ es de orden $O(logn)$.\\
+Ahora también podemos decir que $T(n) \in \Omega(logn)$, puesto que con la misma constante y N para que $T(n)\in O(logn)$ se cumple lo siguiente para toda $n\geq N$:
+\begin{equation}\label{eq:dz}
+\begin{split}
+logn & \leq log(n)C_m + c \\
+logn & \leq T(n) \\
+\end{split}
+\end{equation}
+Por lo tanto $T(n)\in \Omega(logn)$.
+Finalmente como $T(n) \in O(logn)$ y $T(n)\in \Omega(logn)$ decimos que $T(n) \in \Theta(logn)$.
+\subsection{$T(n)=T(n/2) + O(n)$. Prueba que $T(n)=O(n)$.}
+Realizaremos un proceso similar al visto en el inciso anterior.\\
+\paragraph{} Tomemos la siguiente representación de la recurrencia.
+\begin{equation}
+\begin{split}
+T(n) & =T(n/2) + O(n) \\
+T(n) - T(n/2) & = O(n) \\
+T(n) - T(n/2) & \in O(n) \\
+\end{split}
+\end{equation}
+Eso quiere decir que existe una constante $C>0$ y un $n_0$ tal que para toda  $n\geq n_0$ se cumple que:
+\begin{equation}
+T(n)-T(n/2) \leq nC
+\end{equation}
+Revisemos las siguientes ecuaciones:
+\begin{equation}\label{eq:frst:2}
+T(n)-T(n/2) \leq nC_1
+\end{equation}
+\begin{equation}\label{eq:scnd:2}
+T(n/2)-T(n/4) \leq (n/2)C_2
+\end{equation}
+Lo que se representa en \eqref{eq:frst:2} y \eqref{eq:scnd:2} es que para todo $n$ en los dos primeros niveles de la recurrencia, la constante no necesariamente es la misma puesto que solo decimos que es de orden $O(n)$.\\
+De igual forma el $n_0$ donde se empieza a cumplir la desigualdad puede ser distinto también, sin embargo podemos tomar los valores de $n$ mayores al mayor $n_0$ de ambos.\\
+Probemos ahora sumar \eqref{eq:frst:2} y \eqref{eq:scnd:2}.
+\begin{equation}\label{eq:thrd:2}
+\begin{split}
+T(n)-T(n/2) + T(n/2) - T(n/4) & \leq nC_1 + (n/2)C_2 \\
+T(n) - T(n/4) & \leq nC_1 + (n/2)C_2 \\
+T(n) - T(n/4) & \leq nC_1 + nC_2(1/2) \\
+\end{split}
+\end{equation}
+Si realizamos el mismo proceso $j$ veces llegamos a:
+\begin{equation}\label{eq:frth:2}
+T(n)-T(n/(2^j)) \leq \sum_{i=1}^{j}{nC_i(1/i)}
+\end{equation}
+Definamos una función $f(n,j)$ que realice ese proceso:
+\begin{equation}\label{eq:ffth:2}
+f(n,j) = T(n)-T(n/(2^j))
+\end{equation}
+$f(n,j)$ cumple que:
+\begin{equation}\label{eq:sxth:2}
+f(n,j) \leq \sum_{i=1}^{j}{nC_i(1/i)}
+\end{equation}
+Ahora si todas las constantes $C_i$ fueran la misma podríamos separarlo de la suma. Sin embargo podemos tomar a $C_m$ siendo la mayor constante $C_i$ para la cual se cumple que:
+\begin{equation}\label{eq:sep:2}
+\begin{split}
+f(n,j) & \leq \sum_{i=1}^{j}{nC_m(1/i)} \\
+f(n,j) & \leq nC_m \sum_{i=1}^{j}{(1/2^{i-1})} \\
+f(n,j) & \leq nC_m \sum_{i=0}^{j-1}{(1/2^{i})} \\
+f(n,j) & \leq nC_m (1 + \sum_{i=1}^{j-1}{(1/2^{i})}) \\
+\end{split}
+\end{equation}
+Analicemos la siguiente suma para poder simplificar la ecuación \ref{eq:sep:2}.\\
+\begin{equation}\label{eq:sep:3}
+s_n = \dfrac{1}{2} + \dfrac{1}{4} + ... + \dfrac{1}{2^n}  
+\end{equation}
+Ahora multipliquemos por 2 la ecuación \eqref{eq:sep:3}
+\begin{equation}\label{eq:sep:4}
+\begin{split}
+2s_n & = \dfrac{2}{2} + \dfrac{2}{4} + ... + \dfrac{2}{2^n}\\
+2s_n & = 1 + \dfrac{1}{2} + \dfrac{1}{4} + ... + \dfrac{1}{2^{n-1}}\\
+2s_n & = 1 + (s_n - \dfrac{1}{2^{n}})\\
+2s_n & = 1 + s_n - \dfrac{1}{2^{n}}
+\end{split}  
+\end{equation}
+Probemos restando $s_n$ en ambos lados de la ecuación \ref{eq:sep:4}.
+\begin{equation}\label{eq:sep:5}
+\begin{split}
+2s_n  - s_n& = 1 + s_n - \dfrac{1}{2^{n}} - s_n\\
+s_n & = 1 - \dfrac{1}{2^{n}}\\
+\end{split}  
+\end{equation}
+Posteriormente con el resultado de la ecuación \ref{eq:sep:5} podemos simplificar la suma que esta en la ecuación \ref{eq:sep:2}.
+\begin{equation}\label{eq:sep:6}
+\begin{split}
+f(n,j) & \leq nC_m (1 + \sum_{i=1}^{j-1}{(1/2^{i})}) \\
+f(n,j) & \leq nC_m (1 + (1 - \dfrac{1}{2^{j-1}} )) \\
+f(n,j) & \leq nC_m (1 + 1 - \dfrac{1}{2^{j-1}} ) \\
+f(n,j) & \leq nC_m (2 - \dfrac{1}{2^{j-1}} ) \\
+\end{split}
+\end{equation}
+Con $N$ siendo el mayor $n_0$ de las $j$ evaluaciones y con la constante $C_m$ podemos decir que para todo $n\geq N$ la desigualdad \eqref{eq:sep} se cumple y por lo tanto $f(n,j)$ es de orden $O(nC_m (2 - \dfrac{1}{2^{j-1}} ))$.
+Ahora tomemos la $f(n,j)$ que es de orden $O(n)$. Es decir a $f(n,logn)$.
+\begin{equation}\label{eq:oct:2}
+\begin{split}
+f(n,logn) & \leq nC_m (2 - \dfrac{1}{2^{logn-1}} ) \\
+f(n,logn) &  \leq nC_m (2 - \dfrac{1}{2^{logn} 2^{-1}} ) \\
+f(n,logn) & \leq nC_m (2 - \dfrac{1}{n/2} ) \\
+f(n,logn) & \leq nC_m (2 - \dfrac{2}{n} ) \\
+f(n,logn) & \leq C_m (2n - 2) \\
+f(n,logn) & \leq n2C_m - 2C_m \\
+\end{split}
+\end{equation}
+Ahora si sustituimos $f(n,logn)$ con lo de la ecuación \ref{eq:ffth:2}.
+\begin{equation}\label{eq:oct:3}
+\begin{split}
+f(n,logn)  & \leq n2C_m - 2C_m \\
+T(n)-T(n/(2^{logn}) & \leq n2C_m - 2C_m \\
+T(n)-T(n/n)  & \leq n2C_m - 2C_m \\
+T(n)-T(1) & \leq n2C_m - 2C_m \\
+\end{split}
+\end{equation}
+Posteriormente, como $T(1)=c$ obtenemos:
+\begin{equation}\label{eq:nn:2}
+\begin{split}
+T(n)-c  & \leq n2C_m - 2C_m \\
+T(n)-c+c & \leq n2C_m - 2C_m + c\\
+T(n) & \leq n2C_m - 2C_m + c\\
+\end{split}
+\end{equation}
+Con $\eqref{eq:nn:2}$ podemos decir que $T(n)$ es de orden $O(n2C_m - 2C_m + c)$, de igual forma quitando las sumas y restas de constantes que no son las de mayor influencia tenemos que $T(n) \in O(n2C_m)$ y finalmente como $n$ es el factor dominante $T(n)$ es de orden $O(n)$.\\
+\pagebreak
+
 \section{Ejercicio 3.}
 Se tienen dos bases de datos, $BD_1$ y $BD_2$, cada una con $n$ valores numéricos distintos, en total $2n$ valores distintos. La única manera de accesar los datos es mediante preguntas, en las cuales se le da un valor $i\in\{1,..., n\}$ a una de las dos bases de datos, $BD_j$, y esta responde con el $i$-ésimo valor más pequeño que contiene $BD_j$. Diseña un algoritmo que dado un entero $k\in\{1,...,2n\}$ de entrada, encuentre el $k$-ésimo valor más pequeño en las bases de datos, usando $O(logn)$ preguntas. Demuestra la correctez y complejidad de tu algoritmo.
 \subsection{Algoritmo}

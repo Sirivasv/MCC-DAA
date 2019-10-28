@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.8.17)  27 OCT 2019 13:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.5)  28 OCT 2019 10:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Tarea6_Rivas_Vega_Saul_Ivan.tex
 (./Tarea6_Rivas_Vega_Saul_Ivan.tex
 LaTeX2e <2017-04-15>
-Babel <3.18> and hyphenation patterns for 12 language(s) loaded.
+Babel <3.18> and hyphenation patterns for 10 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
@@ -415,11 +415,11 @@ Package babel Info: Making > an active character on input line 707.
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-(/usr/local/share/texmf/tex/latex/babelbib/babelbib.sty
-Package: babelbib 2019/03/11 v1.32 babelbib: multilingual bibliographies (HH)
+(/usr/share/texlive/texmf-dist/tex/latex/babelbib/babelbib.sty
+Package: babelbib 2012/01/03 v1.31 babelbib: multilingual bibliographies (HH)
 
-(/usr/local/share/texmf/tex/latex/babelbib/spanish.bdf
-File: spanish.bdf 2019/03/11 v1.32 babelbib: multilingual bibliographies (HH)
+(/usr/share/texlive/texmf-dist/tex/latex/babelbib/spanish.bdf
+File: spanish.bdf 2012/01/03 v1.31 babelbib: multilingual bibliographies (HH)
 )
 \c@btxromaniannumeral=\count94
 )
@@ -893,6 +893,10 @@ Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 (./Tarea6_Rivas_Vega_Saul_Ivan.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
+
+
+LaTeX Warning: Label `eq:dz' multiply defined.
+
 )
 \openout1 = `Tarea6_Rivas_Vega_Saul_Ivan.aux'.
 
@@ -1061,52 +1065,67 @@ Package pdftex.def Info: ./images/ARBOL.png  used on input line 146.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [5] [6 <./images/ARBOL.png>] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 212--225
+Underfull \hbox (badness 10000) in paragraph at lines 238--239
 
  []
 
 [8] [9]
-<./images/codificacion.png, id=53, 301.125pt x 323.2075pt>
+Underfull \hbox (badness 10000) in paragraph at lines 288--290
+
+ []
+
+[10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 388--401
+
+ []
+
+[13] [14]
+<./images/codificacion.png, id=70, 301.125pt x 323.2075pt>
 File: ./images/codificacion.png Graphic file (type png)
 <use ./images/codificacion.png>
-Package pdftex.def Info: ./images/codificacion.png  used on input line 238.
+Package pdftex.def Info: ./images/codificacion.png  used on input line 414.
 (pdftex.def)             Requested size: 150.56212pt x 161.60335pt.
-<./images/codificacion2.png, id=54, 365.365pt x 243.91125pt>
+<./images/codificacion2.png, id=71, 365.365pt x 243.91125pt>
 File: ./images/codificacion2.png Graphic file (type png)
 <use ./images/codificacion2.png>
-Package pdftex.def Info: ./images/codificacion2.png  used on input line 263.
+Package pdftex.def Info: ./images/codificacion2.png  used on input line 439.
 (pdftex.def)             Requested size: 182.68205pt x 121.95532pt.
- [10 <./images/codificacion.png>] [11 <./images/codificacion2.png>]
+ [15 <./images/codificacion.png>] [16 <./images/codificacion2.png>]
 (./Tarea6_Rivas_Vega_Saul_Ivan.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
-) ) 
+)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 17020 strings out of 494747
- 314897 string characters out of 6176207
- 387436 words of memory out of 5000000
- 20012 multiletter control sequences out of 15000+600000
+ 17045 strings out of 494788
+ 315176 string characters out of 6177223
+ 387541 words of memory out of 5000000
+ 20030 multiletter control sequences out of 15000+600000
  15563 words of font info for 60 fonts, out of 8000000 for 9000
- 107 hyphenation exceptions out of 8191
+ 85 hyphenation exceptions out of 8191
  55i,18n,54p,633b,617s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Tarea6_Rivas_Vega_Saul_Ivan.pdf (11 pages, 251184 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Tarea6_Rivas_Vega_Saul_Ivan.pdf (16 pages, 269421 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 131 PDF objects out of 1000 (max. 8388607)
+ 89 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

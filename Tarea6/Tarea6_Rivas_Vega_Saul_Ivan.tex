@@ -345,86 +345,8 @@ T(n) & \leq n2C_m - 2C_m + c\\
 \end{split}
 \end{equation}
 Con $\eqref{eq:nn:2}$ podemos decir que $T(n)$ es de orden $O(n2C_m - 2C_m + c)$, de igual forma quitando las sumas y restas de constantes que no son las de mayor influencia tenemos que $T(n) \in O(n2C_m)$ y finalmente como $n$ es el factor dominante $T(n)$ es de orden $O(n)$.\\
-\pagebreak
 \subsection{$T(n)=T(n/d) + T(n(d-1)/d) + O(n)$, donde $d$ es un entero positivo. Prueba que $T(n)=O(nlogn)$.}
-Realizaremos un proceso similar al visto en el inciso anterior.\\
-\paragraph{} Tomemos la siguiente representación de la recurrencia.
-\begin{equation}
-\begin{split}
-T(n) & = O(n) \\
-T(n) - T(n/d) - T(n(d-1)/d) & = O(n) \\
-T(n) - T(n/d) - T(n(d-1)/d) & \in O(n) \\
-\end{split}
-\end{equation}
-Eso quiere decir que existe una constante $C>0$ y un $n_0$ tal que para toda  $n\geq n_0$ se cumple que:
-\begin{equation}
-T(n) - T(n/d) - T(n(d-1)/d) \leq nC
-\end{equation}
-Revisemos las siguientes ecuaciones:
-\begin{equation}\label{eq:frst:f}
-T(n) - T(n/d) - T(n(d-1)/d) \leq nC_1
-\end{equation}
-\begin{equation}\label{eq:scnd:f}
-T(n/d) - T(n/(d^2)) - T(n(d-1)/d^2) \leq nC_2
-\end{equation}
-\begin{equation}\label{eq:scnd:f:2}
-T(n(d-1)/d) - T(n(d-1)/d^2) - T(n(d-1)^2/d^2) \leq nC_3
-\end{equation}
-Lo que se representa en \eqref{eq:frst:f}, \eqref{eq:scnd:f} y \eqref{eq:scnd:f:2} es que para todo $n$ en los dos primeros niveles de la recurrencia, la constante no necesariamente es la misma puesto que solo decimos que es de orden $O(1)$.\\
-De igual forma el $n_0$ donde se empieza a cumplir la desigualdad puede ser distinto también, sin embargo podemos tomar los valores de $n$ mayores al mayor $n_0$.\\
-Probemos ahora sumar \eqref{eq:frst:f} y \eqref{eq:scnd:f} y \eqref{eq:scnd:f:2}.
-\begin{equation}\label{eq:thrd:f}
-\begin{split}
-T(n) - T(n/(d^2)) - 2T(n(d-1)/d^2) - T(n(d-1)^2/d^2) & \leq nC_1 + nC_2 + nC_3\\
-\end{split}
-\end{equation}
-Si realizamos el mismo proceso $j$ veces llegamos a:
-\begin{equation}\label{eq:frth}
-T(n)-T(n/(2^j)) \leq \sum_{i=1}^{j}{C_i}
-\end{equation}
-Definamos una función $f(n,j)$ que realice ese proceso:
-\begin{equation}\label{eq:ffth}
-f(n,j) = T(n)-T(n/(2^j))
-\end{equation}
-$f(n,j)$ cumple que:
-\begin{equation}\label{eq:sxth}
-f(n,j) \leq \sum_{i=1}^{j}{C_i}
-\end{equation}
-Ahora si todas las constantes $C_i$ fueran la misma podríamos reducir la ecuación. Sin embargo podemos tomar a $C_m$ siendo la mayor constante $C_i$ para la cual se cumple que:
-\begin{equation}\label{eq:sep}
-\begin{split}
-f(n,j) & \leq \sum_{i=1}^{j}{C_m} \\
-f(n,j) & \leq jC_m \\
-\end{split}
-\end{equation}
-Con $N$ siendo el mayor $n_0$ de las $j$ evaluaciones y con la constante $C_m$ podemos decir que para todo $n\geq N$ la desigualdad \eqref{eq:sep} se cumple y por lo tanto $f(n,j)$ es de orden $O(j)$.
-Ahora tomemos la $f(n,j)$ que es de orden $O(logn)$. Es decir a $f(n,logn)$.
-\begin{equation}\label{eq:oct}
-\begin{split}
-f(n,logn) & \leq log(n)C_m \\
-T(n)-T(n/(2^{logn}) & \leq log(n)C_m\\
-T(n)-T(n/n) & \leq log(n)C_m\\
-T(n)-T(1) & \leq log(n)C_m\\
-\end{split}
-\end{equation}
-Posteriormente, como $T(1)=c$ obtenemos:
-\begin{equation}\label{eq:nn}
-\begin{split}
-T(n)-c & \leq log(n)C_m\\
-T(n)-c+c& \leq log(n)C_m +c\\
-T(n) & \leq log(n)C_m + c\\
-\end{split}
-\end{equation}
-Con $\eqref{eq:nn}$ podemos decir que $T(n)$ es de orden $O(log(n)C_m + c)$, y reduciendo $T(n)$ es de orden $O(logn)$.\\
-Ahora también podemos decir que $T(n) \in \Omega(logn)$, puesto que con la misma constante y N para que $T(n)\in O(logn)$ se cumple lo siguiente para toda $n\geq N$:
-\begin{equation}\label{eq:dz}
-\begin{split}
-logn & \leq log(n)C_m + c \\
-logn & \leq T(n) \\
-\end{split}
-\end{equation}
-Por lo tanto $T(n)\in \Omega(logn)$.
-Finalmente como $T(n) \in O(logn)$ y $T(n)\in \Omega(logn)$ decimos que $T(n) \in \Theta(logn)$.
+\pagebreak
 \section{Ejercicio 3.}
 Se tienen dos bases de datos, $BD_1$ y $BD_2$, cada una con $n$ valores numéricos distintos, en total $2n$ valores distintos. La única manera de accesar los datos es mediante preguntas, en las cuales se le da un valor $i\in\{1,..., n\}$ a una de las dos bases de datos, $BD_j$, y esta responde con el $i$-ésimo valor más pequeño que contiene $BD_j$. Diseña un algoritmo que dado un entero $k\in\{1,...,2n\}$ de entrada, encuentre el $k$-ésimo valor más pequeño en las bases de datos, usando $O(logn)$ preguntas. Demuestra la correctez y complejidad de tu algoritmo.
 \subsection{Algoritmo}
@@ -462,6 +384,7 @@ Se tienen dos bases de datos, $BD_1$ y $BD_2$, cada una con $n$ valores numéric
 	 }
 	\caption{Algoritmo $k$-ésimo elemento.}
 \end{algorithm}
+\pagebreak
 \subsection{}\paragraph{Correctitud.} 
 El algoritmo termina pues en los condicionales de las líneas $9$ y $11$ si se cumplen ambas se devuelve el valor encontrado, siendo este el mayor de entre los consultados en la base de datos 1 y 2. Y en caso de que al menos una no se cumpla el espacio de búsqueda es reducido por la mitad, terminando en $logn$ pasos.\\
 El algoritmo devolverá el $k$-ésimo valor más pequeño en las bases de datos.\\

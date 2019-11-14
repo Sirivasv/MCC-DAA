@@ -119,7 +119,7 @@ Por inducción.\\
 	\item Esta cruzando por $mid$.
 \end{itemize}
 Los cuales son revisados en MAXSUM partiendo en las invocaciones a la izquierda y derecha de $mid$, así como el subarreglo cruzando por $mid$ con MIDSUM.\\
-\textbf{Caso base:} $s$ es igual a $t$, así mismo $mid=s$, por lo tanto el único rango es de $(s,t)$, que es igual a $(s, s)$ y a su vez $(mid, mid)$, lo cual cae en el caso 3 de la invariante.
+\textbf{Caso base:} $s$ es igual a $t$, así mismo $mid=s$, por lo tanto el único rango es de $(s,t)$, que es igual a $(s, s)$ y a su vez $(mid, mid)$, lo cual cae en el caso 3 de la invariante.\\
 \textbf{Hipótesis inductiva:} El algoritmo devolverá el subarreglo de suma máxima que se encuentre en alguno de los 3 casos mencionados.\\
 Suponemos cierto para una i-ésima invocación del algoritmo. Esto implica que ya tenemos la respuesta para cuando buscamos en el rango $(s, mid)$, así como el rango $(mid + 1, t)$, los cuales corresponden a los primeros dos casos. Para el tercero y último caso debemos considerar los rangos que contienen al elemento en $mid$ y como vimos anteriormente el algoritmo MIDSUM nos devolverá el mayor. Entonces como revisamos esos tres casos y devolvemos el mayor podemos decir finalmente que el mayor rango que se encuentre en los únicos 3 casos mencionados, será revisado por el algoritmo y devuelto como respuesta.
 \subsubsection{Complejidad en Tiempo.}
@@ -141,6 +141,59 @@ T(n) & = 2T(n/2) + n \\
 \paragraph{El algoritmo MIDSUM ocupa memoria adicional de O(1).} En MIDSUM solo se inicializan de manera adicional a las entradas las variables para las sumas e índices, lo cual es de orden $O(1)$.
 \paragraph{El algoritmo MAXSUM ocupa memoria adicional de $O(log_2n)$.} En cada invocación solo usamos variables adicionales de $O(1)$, sin embargo la pila de llamadas recursivas también ocupa memoria adicional, esta es equivalente a la profundidad de las invocaciones y como vimos en la sección anterior esta es de $log_2n$, por lo que ademas de las variables de $O(1)$ utilizamos $O(log_2n)$ de la pila de llamadas recursivas. Finalmente como el factor dominante es $O(log_2n)$ decimos que en espacio MAXSUM es de orden $O(log_2n)$.
 \subsection{b) Diseña un algoritmo tipo \textit{programación dinámica} que solucione el problema. Demuestra la corrección de tu algoritmo y haz un análisis de tiempo y espacio.}
+\subsubsection{Algoritmo}
+Tomemos la siguiente función para la definición del algoritmo de programación dinámica.
+\begin{equation}\label{f_ej3.2}
+OPT(i) = 
+\begin{cases}
+\text{A[i],} &\text{i es 0}\\
+\text{max(A[i], OPT(i-1) + A[i]),} &\text{en otro caso} \\
+\end{cases}
+\end{equation}
+La ecuación \ref{f_ej3.2} representa una función que devuelve el valor de la suma máxima para un subarreglo contiguo que termina en el elemento $i$.\\
+Esto es por que en cada $i$ se compara el valor de solo tomar ese elemento, o continuar con el subarreglo en el que se encuentra el elemento anterior.\\\\
+\begin{algorithm}[H]\footnotesize
+	\KwData{Arreglo $A$.}
+	\KwResult{Tupla $(max\_sum, i, j)$ Que representa el valor de la suma máxima y los índices $i,j$ del subarreglo $A[i,...,j]$.}
+	\SetAlgoLined
+	\tcc{Inicializamos el arreglo para recordar respuestas anteriores de tamaño igual a $n$, es decir el tamaño del arreglo $A$.}
+	$M=[n]$\;
+	\tcc{Inicilizamos el valor de $M[0]$ pues solo tiene una opción, así como la suma mayor vista y el indice final del subarreglo con mayor suma.}
+	$M[0] = A[0]$\;
+	$suma\_mayor=A[0]$\;
+	$indice\_final\_mayor=0$\;
+	\tcc{Recorremos las demás posiciones desde 1 hasta $n-1$ y nos quedamos con el mayor para la respuesta.}
+	\For{i = 1, i $\leq$ $n-1$}{
+		$M[i]=max(A[i], A[i] + M[i-1])$\;
+		\If{$M[i]>suma\_mayor$}{
+			$suma\_mayor = M[i]$\;
+			$indice\_final\_mayor = i$\;
+		}
+	}
+	\tcc{Inicializamos el indice de inicio que encontraremos al reconstruir la respuesta.}
+	$indice\_inicio\_mayor=0$\;
+	\tcc{Reconstruimos la respuesta a partir del indice con la mayor suma, que se detiene cuando la respuesta en la posición $i$, es decir $M[i]$, haya sido solo tomar el elemento en dicha posición.}
+	\For{i = $indice\_final\_mayor$, i $\geq$ $0$}{
+		\If{$M[i]=A[i]$}{
+			$indice\_inicio\_mayor=i$\;
+			break\;
+		}
+	}
+	return ($suma\_mayor, indice\_inicio\_mayor, indice\_final\_mayor$)\;
+	\caption{Algoritmo MAXSUMDP.}
+\end{algorithm}
+\subsubsection{Correctitud.}
+\paragraph{El algoritmo termina.} El algoritmo termina por que las únicas operaciones que se están realizando son de comparación y asignación que podemos considerar como constantes y 2 ciclos que recorren a lo más todas las $n$ posiciones en el arreglo, realizando a lo más $n$ iteraciones. Finalmente decimos que el algoritmo termina después de $2n$ iteraciones en total de los 2 ciclos.
+\paragraph{El algoritmo Devuelve el subarreglo de suma máxima en $A$.} 
+\paragraph{Demostremos que la función para encontrar el subarreglo de suma máxima que termina en $i$ es correcta.}
+Por inducción.\\
+\textbf{Invariante:} Para cada $i$ el subarreglo de suma máxima que termina en $i$ es aquel que solo contempla al elemento $A[i]$ y el subarreglo de suma máxima que termina en $i-1$ sumándole $A[i]$. \\
+\textbf{Caso base:} Para $i=0$, en este caso solo queda tomar el elemento $A[0]$ cumpliendo con la invariante.\\
+\textbf{Hipótesis inductiva:} Para cada $i$ solo es necesario considerar el elemento $A[i]$ y el máximo de la posición $i-1$. Esto es cierto debido a que la respuesta requiere dar un subarreglo contiguo y como en la función para la programación dinámica estamos revisando los subarreglos que terminan en cada posición $i$, necesariamente la respuesta en $i$ incluye al elemento $A[i]$.\\
+Le sigue que entonces para considerar al elemento $A[i]$ como parte de un subarreglo contiguo  durante la $i$-ésima iteración, solo puede ser un subarreglo que contenga a $A[i-1]$, pues estamos considerando los subarreglos que terminan en la posición $i$.\\ Ahora entonces hay que tomar el subarreglo de mayor suma que contenga al elemento $A[i-1]$ durante la $i$-ésima iteración, sin embargo esta respuesta ya esta calculada y almacenada en $M[i-1]$.\\ Por lo tanto solo debemos tomar el máximo entre $A[i]$ y $M[i-1]+A[i]$.
+\paragraph{Demostremos que el algoritmo devuelve el subarreglo contiguo de suma máxima.}
+Por contradicción.\\
+Supongamos que existe un subarreglo contiguo de suma máxima, cuya suma es mayor al que devolvió el algoritmo. Eso quiere decir que el algoritmo no contemplo ese subarreglo de suma máxima durante la ejecución, puesto que siempre actualiza su suma máxima si encuentra una suma mayor, como se muestra en la linea $7$. Dicho subarreglo de suma máxima forzosamente tiene un índice final dentro de $A$, es decir el subarreglo de suma máxima $A[i,...,j]$ tiene a $j$ en el rango $0\leq j < n$. Sin embargo el algoritmo, en el primer ciclo, revisa la respuesta de la programación dinámica de los subarreglos que terminan en cada posición $0\leq i < n$, y por la demostración anterior, estas respuestas corresponden a los subarreglos de suma máxima que terminan en $i$. Finalmente esto es una contradicción puesto que si revisamos todos los subarreglos que terminan en una posición $0\leq j < n$ y por lo tanto no puede haber otro subarreglo contiguo de suma máxima, cuya suma sea mayor al que devolvió el algoritmo.\\
 \subsection{c) Haz una comparación de tus dos algoritmos, explicando sus ventajas y desventajas del uno con respecto al otro.}
 \section{Diseña un algoritmo que tome como entrada una gráfica dirigida G con pesos en sus aristas, w : E  $\rightarrow$ Z, y responda a lo siguiente:}
 \begin{itemize}

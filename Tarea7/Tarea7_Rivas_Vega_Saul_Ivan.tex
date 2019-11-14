@@ -206,5 +206,45 @@ En general podemos concluir que para una aplicación mas robusta el algoritmo de
 	\item Si $G$ no tiene ciclos de pesos negativo, entonces responde FALSE.
 	\item De otra forma, el algoritmo responde TRUE y además devuelve un ciclo $C$ de $G$ de peso negativo.
 \end{itemize}
-
+\subsection{Algoritmo}
+\begin{algorithm}[H]
+	\KwData{Gráfica dirigida $G = (V,E)$ con aristas ponderadas.}
+	\KwResult{Tupla (TRUE, $conjunto\_nodos\_en\_ciclo$) si es que hay un ciclo de peso negativo, o la tupla (FALSE, $\emptyset$) en caso contrario.}
+	\SetAlgoLined
+	\tcc{Inicializamos los arreglos para correr el algoritmo de Bellman-Ford, con la variación de que la distancia en lugar de ser $\infty$, ahora es $0$.}
+	\ForEach{$v\in V$}{
+		distancia[$v$] = 0\;
+		padre[$v$] = -1\;
+	}
+	\tcc{Realizamos $n$ 'relajaciones' como en el algoritmo de Bellman-Ford, solo que realizamos $n$ en lugar de $n-1$,  si existió algún nodo que disminuyo su distancia y además era la $n$-ésima relajación, lo guardamos pues es parte de un ciclo negativo.}
+	$nodo\_en\_ciclo\_negativo=-1$\;
+	\For{i = 1, i $\leq$ $n$}{
+		\ForEach{$(u,v, peso) \in E$}{
+			\If{$distancia[u] + peso < distancia[v]$}{
+				distancia[v] = distancia[u] + peso\;
+				padre[v] = u\;
+				\If{i = n}{
+					$nodo\_en\_ciclo\_negativo=i$\;
+				} 
+			}
+		}
+	}
+	\tcc{Revisamos si es que en efecto existió dicho nodo que disminuyo su distancia en la $n$-ésima relajación.}
+	\If{$nodo\_en\_ciclo\_negativo$ = -1}{
+		return (FALSE, $\emptyset$)\;
+	}
+	\tcc{Inicializamos el conjunto respuesta.}	
+	$conjunto\_nodos\_en\_ciclo = \emptyset$\;
+	\tcc{Recorremos la lista de padres del nodo en el ciclo hasta llegar al mismo nodo original.}
+	\ForEach{nodo $n$ en la cadena de padres de $nodo\_en\_ciclo\_negativo$ }{
+		\tcc{Agregamos el nodo $n$ al conjunto respuesta.}
+		$conjunto\_nodos\_en\_ciclo \leftarrow n$\;
+		\If{n = $nodo\_en\_ciclo\_negativo$ And $|conjunto\_nodos\_en\_ciclo| > 1$}{
+			break\;
+		}
+	}
+	return ($TRUE, conjunto\_nodos\_en\_ciclo$)\;
+	\caption{Algoritmo CheckNegativeCycle.}
+\end{algorithm}
+\subsection{Demostración Correctitud}
 \end{document}  

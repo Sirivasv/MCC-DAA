@@ -126,6 +126,13 @@ Suponemos cierto para una i-ésima invocación del algoritmo. Esto implica que y
 \paragraph{MIDSUM es de complejidad $O(n)$.} Como vimos en la sección anterior el algoritmo de MIDSUM termina después de $n$ iteraciones a lo más, por que solo recorre dos ciclos cuyo tamaño total es $n$.
 \paragraph{MAXSUM es de complejidad $O(nlog(n))$.} Como vimos en la sección anterior el algoritmo de MAXSUM termina después de $nlogn$ operaciones, que es de realizar $logn$ invocaciones con a lo más $n$ operaciones en cada una por la llamada a MIDSUM, por lo que la complejidad total es $O(nlog(n))$.
 Con una relación de recurrencia podemos ver la complejidad como:
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.8]{recurrencia}
+	\end{center}
+	\caption{Recurrencia.}
+\end{figure}
+
 \begin{equation}
 \begin{split}
 T(n) & = 2T(n/2) + n \\
@@ -195,7 +202,7 @@ Le sigue que entonces para considerar al elemento $A[i]$ como parte de un subarr
 Por contradicción.\\
 Supongamos que existe un subarreglo contiguo de suma máxima, cuya suma es mayor al que devolvió el algoritmo. Eso quiere decir que el algoritmo no consideró ese subarreglo de suma máxima durante la ejecución, puesto que siempre actualiza su suma máxima si encuentra una suma mayor, como se muestra en la linea $7$. Dicho subarreglo de suma máxima forzosamente tiene un índice final dentro de $A$, es decir el subarreglo de suma máxima $A[i,...,j]$ tiene a $j$ en el rango $0\leq j < n$. Sin embargo el algoritmo, en el primer ciclo, revisa la respuesta de la programación dinámica de los subarreglos que terminan en cada posición $0\leq i < n$, y por la demostración anterior, estas respuestas corresponden a los subarreglos de suma máxima que terminan en $i$. Finalmente esto es una contradicción puesto que si revisamos todos los subarreglos que terminan en una posición $0\leq j < n$ y por lo tanto no puede haber otro subarreglo contiguo de suma máxima, cuya suma sea mayor al que devolvió el algoritmo.\\
 \subsubsection{Complejidad en Tiempo.}
-El algoritmo como vimos termina después de $n$ iteraciones de los 2 ciclos y como en cada iteración se realizan asignaciones y comparaciones que podemos considerar de tiempo constante, podemos decir que se realizan $2n$ operaciones, lo cual hace que el algoritmo sea $O(2n)$ y finalmente $O(n)$.
+El algoritmo como vimos termina después de $n$ iteraciones de los 2 ciclos que no están anidados y como en cada iteración se realizan asignaciones y comparaciones que podemos considerar de tiempo constante, podemos decir que se realizan $2n$ operaciones, lo cual hace que el algoritmo sea $O(2n)$ y finalmente $O(n)$.
  \subsubsection{Complejidad en Espacio.}
  El algoritmo utiliza unas variables para la suma e indice mayores, los cuales podemos considerar de $O(1)$, sin embargo utilizamos un arreglo de tamaño $n$ para almacenar las respuestas y poder reconstruir la respuesta final, por lo tanto la complejidad en memoria es de $O(n)$.
 \subsection{c) Haz una comparación de tus dos algoritmos, explicando sus ventajas y desventajas del uno con respecto al otro.}
@@ -211,12 +218,28 @@ En general podemos concluir que para una aplicación mas robusta el algoritmo de
 	\KwData{Gráfica dirigida $G = (V,E)$ con aristas ponderadas.}
 	\KwResult{Tupla (TRUE, $conjunto\_nodos\_en\_ciclo$) si es que hay un ciclo de peso negativo, o la tupla (FALSE, $\emptyset$) en caso contrario.}
 	\SetAlgoLined
-	\tcc{Inicializamos los arreglos para correr el algoritmo de Bellman-Ford, con la variación de que la distancia en lugar de ser $\infty$, ahora es $0$.}
+	\tcc{Recorremos cada nodo y corremos el algoritmo LlegaCicloNegativo para revisar si tomando como origen a ese nodo $v$ llegamos a un ciclo negativo para devolverlo como respuesta.}
 	\ForEach{$v\in V$}{
-		distancia[$v$] = 0\;
+		($hay\_ciclo$, $conjunto\_nodos\_en\_ciclo$) = LlegaCicloNegativo($G$,$v$)\;
+		\If{$hay\_ciclo$ = TRUE}{
+			return ($TRUE, conjunto\_nodos\_en\_ciclo$)\;
+		}
+	}
+	return (FALSE, $\emptyset$)\;
+	\caption{Algoritmo GetNegativeCycle.}
+\end{algorithm}
+\begin{algorithm}[H]\small
+	\KwData{Gráfica dirigida $G = (V,E)$ con aristas ponderadas y un nodo origen $s$.}
+	\KwResult{Tupla (TRUE, $conjunto\_nodos\_en\_ciclo$) si es que hay un ciclo de peso negativo al que se llega a partir del nodo origen $s$, o la tupla (FALSE, $\emptyset$) en caso contrario.}
+	\SetAlgoLined
+	\tcc{Inicializamos los arreglos para correr el algoritmo de Bellman-Ford.}
+	\ForEach{$v\in V$}{
+		distancia[$v$] = $\infty$\;
 		padre[$v$] = -1\;
 	}
-	\tcc{Realizamos $n$ 'relajaciones' como en el algoritmo de Bellman-Ford, solo que realizamos $n$ en lugar de $n-1$,  si existió algún nodo que disminuyo su distancia y además era la $n$-ésima relajación, lo guardamos pues es parte de un ciclo negativo.}
+	\tcc{Inicializamos el valor de distancia para para el nodo origen.}
+	distancia[s] = 0\;
+	\tcc{Realizamos $n$ 'relajaciones', donde $n=|V|$, como en el algoritmo de Bellman-Ford, solo que realizamos $n$ en lugar de $n-1$,  si existió algún nodo que disminuyo su distancia y además era la $n$-ésima relajación, lo guardamos pues es parte de un ciclo negativo.}
 	$nodo\_en\_ciclo\_negativo=-1$\;
 	\For{i = 1, i $\leq$ $n$}{
 		\ForEach{$(u,v, peso) \in E$}{
@@ -224,15 +247,16 @@ En general podemos concluir que para una aplicación mas robusta el algoritmo de
 				distancia[v] = distancia[u] + peso\;
 				padre[v] = u\;
 				\If{i = n}{
-					$nodo\_en\_ciclo\_negativo=i$\;
+					$nodo\_en\_ciclo\_negativo=v$\;
 				} 
 			}
 		}
 	}
-	\tcc{Revisamos si es que en efecto existió dicho nodo que disminuyo su distancia en la $n$-ésima relajación.}
+	\tcc{Revisamos si es que no existió dicho nodo que disminuyo su distancia en la $n$-ésima relajación.}
 	\If{$nodo\_en\_ciclo\_negativo$ = -1}{
 		return (FALSE, $\emptyset$)\;
 	}
+	\tcc{En este punto si existió dicho nodo que disminuyo su distancia en la $n$-ésima relajación.}
 	\tcc{Inicializamos el conjunto respuesta.}	
 	$conjunto\_nodos\_en\_ciclo = \emptyset$\;
 	\tcc{Recorremos la lista de padres del nodo en el ciclo hasta llegar al mismo nodo original.}
@@ -244,7 +268,29 @@ En general podemos concluir que para una aplicación mas robusta el algoritmo de
 		}
 	}
 	return ($TRUE, conjunto\_nodos\_en\_ciclo$)\;
-	\caption{Algoritmo CheckNegativeCycle.}
+	\caption{Algoritmo LlegaCicloNegativo.}
 \end{algorithm}
-\subsection{Demostración Correctitud}
+\subsection{Explicación Correctitud}
+\paragraph{El algoritmo LlegaCicloNegativo Termina.}
+El algoritmo termina por que se realizan 2 ciclos for anidados, con el primer ciclo for recorriendo los valores desde 1 hasta $n$ que representan las $n - 1$ relajaciones en el algoritmo de Bellman-Ford con una relajación adicional con el propósito de encontrar el ciclo negativo. Esto da un total de $n$ relajaciones, y cada relajación recorre todas las aristas de la gráfica, siendo entonces un total de $n\times|E|$ iteraciones en total. Como en cada iteración se realizan asignaciones y comparaciones podemos considerarlas de tiempo constante. El valor máximo de $|E|$ puede llegar a ser cercano a $|V|^2$ que es el caso cuando todos los nodos tienen una arista todos los otros nodos. Y como estamos considerando a $n=|V|$, entonces el algoritmo realizaría un total de $n^3$. Adicionalmente si es que hay un ciclo negativo se realiza otro ciclo for que sigue la cadena de padres, el cual en el peor de los casos incluye a todos los nodos, siendo $n$ iteraciones más. Finalmente decimos que el algoritmo termina después de $n^3 + n$ operaciones.
+\paragraph{El algoritmo GetNegativeCycle Termina.}
+El algoritmo termina por que se realizan 1 solo ciclo for, el cual realiza $n$ iteraciones con $n=|V|$, y en cada iteración se llama al algoritmo LlegaCicloNegativo, el cuál anteriormente vimos que realiza $n^3$ iteraciones. Con $n$  llamadas a una función que realiza $n^3$ operaciones, finalmente decimos que el algoritmo termina después de a lo más $n^4$ operaciones.
+\paragraph{El algoritmo LlegaCicloNegativo devuelve un ciclo de peso negativo en $G$ al cuál se llega a partir del nodo origen $s$}
+Originalmente el algoritmo de Bellman-Ford en el que esta basado LlegaCicloNegativo, realiza $n-1$ relajaciones. Son $n-1$ iteraciones porque se toma en cuenta la propiedad de que un camino mínimo simple que conecta a un par de nodos en una gráfica conexa con $n$ nodos tiene a lo más $n-1$ aristas. La razón de esto es que tener una gráfica conexa con $n$ nodos y $n$ aristas tiene un ciclo, y a su vez considerar tomar un ciclo para mejorar la distancia a un nodo significaría que podemos recorrer ese mismo ciclo un número arbitrario de veces y seguir mejorando la distancia a ese nodo, lo cual infiere que recorrer el ciclo resta distancia y que por lo tanto es de peso negativo.\\
+Al realizar $n$ iteraciones y algún nodo mejora su distancia estamos en el caso mencionado anteriormente y este nodo forma parte del ciclo negativo que mejoró su distancia en la $n$-ésima relajación.\\
+Finalmente como en cada ocasión que reducimos la distancia a un nodo actualizamos el padre para ese nodo, el arreglo de $padres$ al ser recorrido tendrá los nodos en el ciclo negativo, el cual es devuelto como respuesta en caso de existir dicho nodo que mejoró su distancia en la $n$-ésima relajación.\\
+\paragraph{El algoritmo GetNegativeCycle devuelve un ciclo de peso negativo en la gráfica $G$.}
+En este caso por la explicación anterior podemos asumir correcto el funcionamiento del algoritmo LlegaCicloNegativo, y ahora por contradicción explicar que GetNegativeCycle es correcto. 
+Supongamos que existe al menos un ciclo de peso negativo en $G$ y nuestro algoritmo no encontró ninguno. Eso quiere decir que no revisamos ni un solo nodo el cual pueda llegar al ciclo, ya que si lo hubiéramos revisado el algoritmo LlegaCicloNegativo nos lo hubiera devuelto.
+Pero esto es una contradicción por que llamamos a LlegaCicloNegativo en todos los nodos $v\in V$ de la gráfica y no pudimos revisar y a la vez ignorar a algún nodo $v$ que si estuviera en el ciclo. Finalmente decimos que el algoritmo GetNegativeCycle devuelve un ciclo de peso negativo en la gráfica $G$.
+\subsection{Explicación Complejidad en tiempo}
+\paragraph{El algoritmo LlegaCicloNegativo es de complejidad $O(n^3)$.}
+Como vimos en la explicación de que termina el algoritmo, este termina después de $n^3+n$ iteraciones y podemos considerar las operaciones de asignación y comparación como de tiempo $O(1)$. Finalmente decimos que el algoritmo es de orden $O(n^3 + n)$, que tomando el factor dominante es $O(n^3)$.
+\paragraph{El algoritmo GetNegativeCycle es de complejidad $O(n^4)$.}
+Como vimos en la explicación de que termina el algoritmo, este termina después de $n^4$ iteraciones y podemos considerar las operaciones de asignación y comparación como de tiempo $O(1)$. Finalmente decimos que el algoritmo es de orden $O(n^4)$.
+\subsection{Explicación Complejidad en espacio}
+\paragraph{El algoritmo LlegaCicloNegativo ocupa espacio $O(n)$.}
+El algoritmo tiene solo como memoria adicional algunas variables para guardar el nodo en el ciclo o los indices en los ciclos for, los cuales podemos considerar $O(1)$. Sin embargo hacemos uso de un arreglo de padres y distancias para cada nodo los cuales son $O(|V|)$, lo cual es $O(n)$, de igual forma tenemos el conjunto respuesta para los nodos en el ciclo de peso negativo, el cual podría albergar a todos los nodos en $G$, por lo tanto es de $O(n)$. Finalmente tenemos que el algoritmo tiene una complejidad en espacio de orden $O(3n)$, el cual es $O(n)$.
+\paragraph{El algoritmo GetNegativeCycle ocupa espacio $O(n)$.}
+El algoritmo solo ocupa la variable que le devuelve el algoritmo LlegaCicloNegativo, el cual es de $O(n)$. Finalmente tenemos que es de orden $O(n)$.
 \end{document}  

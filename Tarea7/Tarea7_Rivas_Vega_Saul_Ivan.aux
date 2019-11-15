@@ -20,22 +20,34 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.3}Complejidad en Tiempo.}{5}}
 \@writefile{toc}{\contentsline {paragraph}{MIDSUM es de complejidad $O(n)$.}{5}}
 \@writefile{toc}{\contentsline {paragraph}{MAXSUM es de complejidad $O(nlog(n))$.}{5}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.4}Complejidad en Espacio.}{5}}
-\@writefile{toc}{\contentsline {paragraph}{El algoritmo MIDSUM ocupa memoria adicional de O(1).}{5}}
-\@writefile{toc}{\contentsline {paragraph}{El algoritmo MAXSUM ocupa memoria adicional de $O(log_2n)$.}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Recurrencia.\relax }}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {1.1.4}Complejidad en Espacio.}{6}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo MIDSUM ocupa memoria adicional de O(1).}{6}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo MAXSUM ocupa memoria adicional de $O(log_2n)$.}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2}b) Dise\IeC {\~n}a un algoritmo tipo \textit  {programaci\IeC {\'o}n din\IeC {\'a}mica} que solucione el problema. Demuestra la correcci\IeC {\'o}n de tu algoritmo y haz un an\IeC {\'a}lisis de tiempo y espacio.}{6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.1}Algoritmo}{6}}
 \newlabel{f_ej3.2}{{2}{6}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Algoritmo MAXSUMDP.\relax }}{6}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Algoritmo MAXSUMDP.\relax }}{7}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.2}Correctitud.}{7}}
 \@writefile{toc}{\contentsline {paragraph}{El algoritmo termina.}{7}}
 \@writefile{toc}{\contentsline {paragraph}{El algoritmo Devuelve el subarreglo de suma m\IeC {\'a}xima en $A$.}{7}}
 \@writefile{toc}{\contentsline {paragraph}{Demostremos que la funci\IeC {\'o}n para encontrar el subarreglo de suma m\IeC {\'a}xima que termina en $i$ es correcta.}{7}}
-\@writefile{toc}{\contentsline {paragraph}{Demostremos que el algoritmo devuelve el subarreglo contiguo de suma m\IeC {\'a}xima.}{7}}
+\@writefile{toc}{\contentsline {paragraph}{Demostremos que el algoritmo devuelve el subarreglo contiguo de suma m\IeC {\'a}xima.}{8}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.3}Complejidad en Tiempo.}{8}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.2.4}Complejidad en Espacio.}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}c) Haz una comparaci\IeC {\'o}n de tus dos algoritmos, explicando sus ventajas y desventajas del uno con respecto al otro.}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Dise\IeC {\~n}a un algoritmo que tome como entrada una gr\IeC {\'a}fica dirigida G con pesos en sus aristas, w : E $\rightarrow $ Z, y responda a lo siguiente:}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}c) Haz una comparaci\IeC {\'o}n de tus dos algoritmos, explicando sus ventajas y desventajas del uno con respecto al otro.}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Dise\IeC {\~n}a un algoritmo que tome como entrada una gr\IeC {\'a}fica dirigida G con pesos en sus aristas, w : E $\rightarrow $ Z, y responda a lo siguiente:}{9}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Algoritmo}{9}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces Algoritmo CheckNegativeCycle.\relax }}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}title}{10}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces Algoritmo GetNegativeCycle.\relax }}{9}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces Algoritmo LlegaCicloNegativo.\relax }}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Explicaci\IeC {\'o}n Correctitud}{11}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo LlegaCicloNegativo Termina.}{11}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo GetNegativeCycle Termina.}{11}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo LlegaCicloNegativo devuelve un ciclo de peso negativo en $G$ al cu\IeC {\'a}l se llega a partir del nodo origen $s$}{11}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo GetNegativeCycle devuelve un ciclo de peso negativo en la gr\IeC {\'a}fica $G$.}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Explicaci\IeC {\'o}n Complejidad en tiempo}{12}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo LlegaCicloNegativo es de complejidad $O(n^3)$.}{12}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo GetNegativeCycle es de complejidad $O(n^4)$.}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Explicaci\IeC {\'o}n Complejidad en espacio}{12}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo LlegaCicloNegativo ocupa espacio $O(n)$.}{12}}
+\@writefile{toc}{\contentsline {paragraph}{El algoritmo GetNegativeCycle ocupa espacio $O(n)$.}{12}}

@@ -154,6 +154,29 @@
 		return ($max\_long, r\_i, r\_j$)\;
 		\caption{Algoritmo MAXDECLIVE.}
 	\end{algorithm}
+\subsection{Demostración correctitud.}
+\paragraph{El algoritmo termina.} El algoritmo termina puesto que solo realiza un loop con $n$ iteraciones en las cuales se realizan asignaciones y comparaciones que podemos asumir de tiempo constante, sin embargo también se realizan inserciones en una cola de prioridad que como hemos revisado anteriormente, son de tiempo $logn$. Por lo tanto podemos decir que el algoritmo termina después de $n$ iteraciones, posteriormente en el análisis temporal desarrollaremos la complejidad de cada iteración.
+\paragraph{El algoritmo devuelve un declive de longitud máxima.}
+Podemos partir de explicar cuál es un algoritmo que por fuerza bruta encuentra la respuesta. Es un algoritmo que solo intentará todas las posibles parejas $i,j$ donde $i\leq j$ y verificará si es un declive, conservando el declive con longitud máxima, lo cuál sería de tiempo $O(n^2)$ lo cual no cumple con nuestra restricción temporal de $o(n^2)$. Sin embargo tomemos la siguiente observación.
+\paragraph{Observación 1} No es necesario revisar todos los $j$ tales que $j \geq i$ para encontrar un declive de longitud máxima que tiene a $i$ como primer elemento, solo es necesario revisar al elemento $j$ tal que $j \in [i,...,n]$ y además tenga el menor valor en $A[i,...,n]$. 
+\paragraph{Demostración de la Observación 1} Por contradicción.\\
+Supongamos que el declive de longitud máxima que tiene a $i$ como primer elemento no es con el $j$ tal que $j \in [i,...,n]$ y además tenga el menor $A[j]$, sino con un $j'$ tal que por lo menos cumple que $j' \in [i,...,n]$ y además $A[j] \leq A[i]$ para ser un declive. Si $j'$ tiene el menor valor en $A[i,...,n]$ entonces significa que $j' = j$, en otro caso significa que $A[j]< A[j']$, y podemos desarrollar la siguiente ecuación:
+\begin{equation}
+	\begin{split}
+	A[j]< A[j']\\ 
+	-A[j]> -A[j']\\
+	A[i]-A[j]> A[i]-A[j']\\
+	\end{split}
+\end{equation}
+Lo cual significa que la longitud del declive tomando al elemento $j$ es mayor al declive tomando al elemento $j'$, pero esto es una contradicción puesto que en la suposición inicial el declive $(i, j')$ era el de longitud máxima.
+Finalmente como no puede existir dicho $j'$ decimos que el declive de longitud máxima que tiene como primer elemento a $i$ es $(i,j)$ donde el elemento $j$ cumple que $j \in [i,...,n]$ y además tiene el menor valor en $A[i,...,n]$
+\paragraph{} Ahora tomando la \textbf{Observación 1} podemos demostrar la correctitud del algoritmo por contradicción.
+Supongamos que el declive de longitud máxima $(i',j')$ no fue devuelto por el algoritmo. Por la \textbf{Observación 1} para dicho declive significa que $j'$ cumple que $j' \in [i',...,n]$ y además tiene el menor valor en $A[i',...,n]$. El algoritmo debió haber ignorado a $i'$ puesto que para cuando se encuentra en el índice $i$ justamente revisa el elemento $j$ tal que cumple que $j \in [i,...,n]$ y además tiene el menor valor en $A[i,...,n]$. Sin embargo, el algoritmo si revisa todos los índices $1 \leq i \leq n$ pero esto es una contradicción puesto que no puede haber revisado e ignorado al índice $i'$. Finalmente decimos que el algoritmo devuelve un declive de longitud máxima.
+\subsection{Análisis de tiempo}
+\paragraph{El algoritmo es de complejidad $O(nlogn)$ y por lo tanto $o(n^2)$} Como vimos en la sección donde se explicaba que el algoritmo termina, el algoritmo solo realiza un loop de fin a inicio por los $n$ elementos en $A$, sin embargo en cada iteración además de las operaciones de asignación y comparación que podemos asumir de tiempo $O(1)$, también tenemos operaciones de inserción y consulta a una cola de prioridad que como anteriormente hemos visto son de complejidad $O(logn)$. Por lo tanto el algoritmo es de complejidad $O(nlogn)$ y como para toda constante $c>0$ existe un $n_0$ tal que para toda $n\geq n_0$ se cumple que $nlogn < n^2$ decimos que el algoritmo es $o(n^2)$.
+\subsection{Análisis de espacio}
+\paragraph{El algoritmo ocupa espacio de orden $O(n)$} 
+Adicional a la entrada el algoritmo ocupa algunas variables individuales para las respuestas y consultar a la cola de prioridad las cuales podemos considerar de orden $O(1)$. Sin embargo también hacemos uso de una cola de prioridad y adicionalmente no removemos los elementos que insertamos en ella y como cada elemento es una pareja, tendremos al final $2n$ valores en la cola de prioridad. Como $2n$ es el factor dominante decimos que el algoritmo tiene espacio de orden $O(2n)$ y finalmente $O(n)$.
 \section{Ejercicio 3}
 	\paragraph{} Considera el problema de selección de centros visto en clase. Demuestra que el siguiente algoritmo devuelve un conjunto $C$ con a lo más $k$ centros tal que $rc(C)\leq 2rc(C^*)$, donde $C^*$ es un conjunto con a lo más $k$ centros óptimo, es decir con radio de covertura mínimo. Puedes suponer como correctos todos los algoritmos y afirmaciones vistas en clase.
 	\begin{figure}[h]

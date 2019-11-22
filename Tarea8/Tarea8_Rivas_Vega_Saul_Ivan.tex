@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{
+	left=20mm,
+	top=20mm,
+}
+\usepackage[utf8]{inputenc}
+\usepackage[shortlabels]{enumitem}
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage[spanish,es-nodecimaldot]{babel}
+ \usepackage{url}
+\usepackage[spanish, fixlanguage]{babelbib}
+\bibliographystyle{IEEEtran}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage[linesnumbered]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\usepackage{tikz}
+\usetikzlibrary{positioning, fit}
+\usetikzlibrary{babel}
+\usepackage{titlesec}
+\titlespacing*{\section}
+{0pt}{5.5ex plus 1ex minus .2ex}{.3ex plus .1ex}
+\titlespacing*{\subsection}
+{0pt}{5.5ex plus 1ex minus .2ex}{2.3ex plus .1ex}
+\title{Tarea 8}
+
+\author{
+	Saul Ivan Rivas Vega \\
+	\\
+	Diseño y análisis de algoritmos\\
+\\
+	Equipo Completo:\\
+		Yadira Fleitas Toranzo\\
+		Diego de Jesús Isla Lopez\\
+		Saul Ivan Rivas Vega\\
+}
+
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\pagebreak
+	\section{Ejercicio 1.}
+	\paragraph{} Considera el siguiente problema de \textit{formato de textos}. Como entrada tenemos un arreglo $W[1,...,n]$ tal que cada $W[i]$ es una palabra; supondremos que el último símbolo en $W[i]$ es un espacio en blanco.También recibimos un entero \textbf{long\_linea} $> 0$ como parte de la entrada, tal que \textbf{long\_linea} es mayor o igual a la longitud de cada palabra $W[i]$, denotada $|W[i]|$. Lo que buscamos es dar \textit{fomato} al texto en $W$ para esto hay que decidir cuales palabras van juntas en la misma línea. Si decidimos poner en una misma línea las palabras $W[i],...,W[i']$, $i\leq i'$, lo que se denota $l[i,i']$, entonces la \textit{penalización} de $l[i,i']$ es:
+	\begin{itemize}
+		\item $\infty$ si \textbf{long\_linea} $< |W[i]| + ... + |W[i']|$ (es decir, las palabras no caben en una sola línea);
+		\item de otra forma, $($\textbf{long\_linea}$-(|W[i]| + ... + |W[i']|))^3$
+	\end{itemize}
+	Entonces, la \textit{penalización} de un \textit{formato} $l_1[1,i_1], l_2[i_1+1, i_2], ..., l_j[i_{j-1}+1, n]$ de $W$ es la suma de las penalizaciones de sus líneas.
+	 \\
+	 \subsection{a) Demuestra que la siguiente estrategia \textit{greedy} produce \textit{formatos} arbitrariamente malos, es decir, con penalizaciones arbitrariamente grandes}
+	 \paragraph{}Procesamos las palabras de $W[1]$ a $W[n]$; si aún hay espacio suficiente para meter $W[i]$ en la línea actual, entonces la metemos; de otra forma iniciamos una nueva línea en la que ponemos a $W[i]$.
+	 \paragraph{Demostración.} Podemos demostrarlo dando un ejemplo donde esto sucede.\\
+	 Sea $n=3$, $long\_linea=6$ y con las longitudes 
+	 $|W[1]|=3$, $|W[2]|=3$ y  $|W[3]|=2$.\\
+	 \begin{itemize}
+	 	\item El algoritmo tomará la línea actual con espacio disponible de $6$ y procesará la primera palabra, $W[1]$.
+	 	\item Como el espacio disponible es $6$ y $|W[1]|=3$ entonces la metemos en la línea actual.
+	 	\item Ahora el espacio disponible es $3$ y como $|W[2]|=3$ entonces la metemos en la línea actual.
+	 	\item Como el espacio disponible es $0$ y $|W[3]|=2$ creamos una nueva linea y metemos a $W[3]$ en ella.
+	 \end{itemize}
+ 	Al terminar el algoritmo terminamos con un formato $f_1$ con las lineas $l_1[1,2]$ y la linea $l_2[3, 3]$. Veamos sus \textit{penalizaciones}.\\
+ 	En el caso de $l_1[1,2]$, $|W[1]|+|W[2]|$ es igual a $long\_linea$ entonces entra en el segundo caso de la función de \textit{penalización} entonces la calculamos con: 
+ 	\begin{equation}
+ 		\begin{split}
+ 		\textit{penalizacion}(l_1[1,2])= & (long\_linea - (|W_1| + |W_2|))^3 \\
+ 		 = & (long\_linea - (3 + 3))^3 \\
+ 		 = & (long\_linea - 6)^3\\
+ 		 = & (6 - 6)^3\\
+ 		 = & (0)^3 \\
+ 		 = & 0
+ 		\end{split}
+ 	\end{equation}
+	Para $l_2[3,3]$, $|W[3]|$ es menor a $long\_linea$ entonces entra en el segundo caso de la función de \textit{penalización} entonces la calculamos con: 
+	\begin{equation}
+	\begin{split}
+	\textit{penalizacion}(l_2[3,3])= & (long\_linea - (|W_3|))^3 \\
+	= & (long\_linea - (2))^3 \\
+	= & (long\_linea - 2)^3\\
+	= & (6 - 2)^3\\
+	= & (4)^3 \\
+	= & 64
+	\end{split}
+	\end{equation}
+	Ahora la \textit{penalización} del formato $f_1$ es la suma de las dos penalizaciones de sus líneas:
+	\begin{equation}
+		\textit{penalización $f_1$}= 64 + 0 = 64 
+	\end{equation}
+	Sin embargo, tomemos el siguiente formato $f_2$ con las líneas, $l_1[1,1]$ y $l_2[2,3]$. Para $l_1[1,1]$ tenemos:
+	\begin{equation}
+	\begin{split}
+	\textit{penalizacion}(l_1[1,1])= & (long\_linea - (|W_1|))^3 \\
+	= & (long\_linea - (3))^3 \\
+	= & (long\_linea - 3)^3\\
+	= & (6 - 3)^3\\
+	= & (3)^3 \\
+	= & 27
+	\end{split}
+	\end{equation}
+	Y para $l_2[2,3]$ tenemos:
+	\begin{equation}
+	\begin{split}
+	\textit{penalizacion}(l_2[2,3])= & (long\_linea - (|W_2|+|W_3|))^3 \\
+	= & (long\_linea - (3 + 2))^3 \\
+	= & (long\_linea - 5)^3\\
+	= & (6 - 5)^3\\
+	= & (1)^3 \\
+	= & 1
+	\end{split}
+	\end{equation}
+	Por lo tanto la \textit{penalización} total para el formato $f_2$ es:
+	\begin{equation}
+	\textit{penalización $f_2$}= 27 + 1 = 28 
+	\end{equation}
+	Finalmente como $f_1$ es mayor que $f_2$ y además podemos formar arreglos agregando las mismas 3 longitudes del ejemplo en ese orden decimos que el algoritmo produce \textit{formatos} con penalizaciones arbitrariamente grandes.
+	\subsection{b) Usa la técnica de programación dinámica para diseñar un algoritmo que encuentre un formato con penalización mínima. Demuestra la correctitud de tu algoritmo y haz un análisis de tiempo y espacio.}
+	\subsection{c) Modifica tu algoritmo para que funcione con una función de penalización de línea dada; la penalización de un formato sigue siendo la suma de las penalizaciones de sus líneas.}
+\section{Ejercicio 2}
+	\paragraph{} Considera un arreglo $A[1,...,n]$ con enteros positivos en sus entradas. Decimos que una pareja $(i,j)$ es un \textit{declive} si $i\leq j$ y $A[i]\geq A[j]$; la \textit{longitud} de $(i,j)$ es $A[i] - A[j]$. Diseña un algoritmo de tiempo y espacio $o(n^2)$ que calcule un declive de $A$ de longitud máxima (es $o$ pequeña, investiga ese concepto). Demuestra que tu algoritmo es correcto y haz el análisis de tiempo y espacio.
+\section{Ejercicio 3}
+	\paragraph{} Considera el problema de selección de centros visto en clase. Demuestra que el siguiente algoritmo devuelve un conjunto $C$ con a lo más $k$ centros tal que $rc(C)\leq 2rc(C^*)$, donde $C^*$ es un conjunto con a lo más $k$ centros óptimo, es decir con radio de covertura mínimo. Puedes suponer como correctos todos los algoritmos y afirmaciones vistas en clase.
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[width=\textwidth]{AlgCentros}
+		\end{center}
+	\end{figure}
+\pagebreak
+\section{Ejercicio 4}
+\paragraph{} Escribe una versión recursiva del algoritmo probabilístico de corte mínimo visto en clase (basado en contracciones de aristas). Demuestra que el conjunto de aristas devuelto por el algoritmo es efectivamente un corte de la gráfica inicial.
+\section{Ejercicio 5}
+\paragraph{} Tenemos $n$ servidores que buscan coordinarse para ejecutar localmente la misma acción. De forma \textit{abstracta}, los servidores llegan a un \textit{consenso} sobre un bit, y ejecutan localmente la acción asociada. Por ejemplo, si el bit consensuado es 0, cada servidor hace \textit{rollback} en su base de datos local, pero si el bit consensuado es 1, cada servidor hace \textit{commit} localmente. Considera el siguiente algoritmo probabilístico para este problema:
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\textwidth]{AlgoProba}
+	\end{center}
+\end{figure}
+\paragraph{Responde a lo siguiente:}
+\begin{enumerate}
+	\item Demuestra que el número esperado de iteraciones para ejecutar la acción es $O(2^n)$. Tip: Modela el problema con una variable aleatoria con distribución geométrica.
+	\item ¿Cuál es el número esperado de iteraciones si en cada una de ellas los servidores obtienen su $r-$ésimo bit, $b_r$, llamando una función \textbf{shared\_random\_bit($r$)} que devuelve el mismo $r-$ésimo bit a todos los servidores con probabilidad $p$, para alguna constante $0 < p < 1$?
+\end{enumerate}
+\end{document}  

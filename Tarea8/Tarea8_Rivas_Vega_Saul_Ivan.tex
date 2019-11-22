@@ -122,7 +122,38 @@
 	\subsection{b) Usa la técnica de programación dinámica para diseñar un algoritmo que encuentre un formato con penalización mínima. Demuestra la correctitud de tu algoritmo y haz un análisis de tiempo y espacio.}
 	\subsection{c) Modifica tu algoritmo para que funcione con una función de penalización de línea dada; la penalización de un formato sigue siendo la suma de las penalizaciones de sus líneas.}
 \section{Ejercicio 2}
-	\paragraph{} Considera un arreglo $A[1,...,n]$ con enteros positivos en sus entradas. Decimos que una pareja $(i,j)$ es un \textit{declive} si $i\leq j$ y $A[i]\geq A[j]$; la \textit{longitud} de $(i,j)$ es $A[i] - A[j]$. Diseña un algoritmo de tiempo y espacio $o(n^2)$ que calcule un declive de $A$ de longitud máxima (es $o$ pequeña, investiga ese concepto). Demuestra que tu algoritmo es correcto y haz el análisis de tiempo y espacio.
+	\paragraph{} Considera un arreglo $A[1,...,n]$ con enteros positivos en sus entradas. Decimos que una pareja $(i,j)$ es un \textit{declive} si $i\leq j$ y $A[i]\geq A[j]$; la \textit{longitud} de $(i,j)$ es $A[i] - A[j]$. Diseña un algoritmo de tiempo y espacio $o(n^2)$ que calcule un declive de $A$ de longitud máxima (es $o$ pequeña, investiga ese concepto). Demuestra que tu algoritmo es correcto y haz el análisis de tiempo y espacio.\\
+	\begin{algorithm}[H]
+		\KwData{Arreglo $A$.}
+		\KwResult{Tupla $(max\_long, r\_i, r\_j)$ Que representa el valor de la longitud máxima de un declive en $A$ y los índices $r\_i,r\_j$ de dicho declive $(r\_i,r\_j)$.}
+		\SetAlgoLined
+		\tcc{Inicializamos una cola de prioridad donde guardaremos tuplas $(A[i], i)$ donde ordenaremos mayor a menor por $A[i]$.}
+		$Q=\{\}$\;
+		\tcc{Inicializamos las respuestas actuales.}
+		$max\_long=-\infty$\;
+		$r\_i=0$\;
+		$r\_j=0$\;
+		\tcc{Recorremos del final al inicio el arrego $A$, pasando por todas las posiciones desde $n$ hasta $1$.}
+		\For{i = n, i $\geq$ $1$}{
+			\tcc{Insertamos el elemento actual a la cola de prioridad.}
+			$(A[i], i)\rightarrow Q$\;
+			\tcc{Obtenemos el elemento al frente de $Q$, es decir la tupla $(A[i], i)$ con menor $A[i]$, no lo removemos de la cola de prioridad solo obtenemos sus valores.}
+			$(valor, indice)\leftarrow Q$\;
+			\tcc{Como procesamos de fin a inicio este elemento cumple que $i \leq indice$, ahora entonces revisamos si $A[i]\geq valor$ lo cual sería un declive $(i, indice)$.}
+			\If{$A[i]\geq valor$}{
+				\tcc{Calculamos la longitud del declive $(i, indice)$.}
+				$current\_long = A[i] - valor$\;
+				\tcc{Actualizamos nuestra respuesta si es mayor a la que llevabamos.}
+				\If{$current\_long > max\_long$} {
+					$max\_long = current\_long$\;
+					$r\_i=i$\;
+					$r\_j=indice$\;
+				}
+			}
+		}
+		return ($max\_long, r\_i, r\_j$)\;
+		\caption{Algoritmo MAXDECLIVE.}
+	\end{algorithm}
 \section{Ejercicio 3}
 	\paragraph{} Considera el problema de selección de centros visto en clase. Demuestra que el siguiente algoritmo devuelve un conjunto $C$ con a lo más $k$ centros tal que $rc(C)\leq 2rc(C^*)$, donde $C^*$ es un conjunto con a lo más $k$ centros óptimo, es decir con radio de covertura mínimo. Puedes suponer como correctos todos los algoritmos y afirmaciones vistas en clase.
 	\begin{figure}[h]

@@ -120,6 +120,20 @@
 	\end{equation}
 	Finalmente como $f_1$ es mayor que $f_2$ y además podemos formar arreglos agregando las mismas 3 longitudes del ejemplo en ese orden decimos que el algoritmo produce \textit{formatos} con penalizaciones arbitrariamente grandes.
 	\subsection{b) Usa la técnica de programación dinámica para diseñar un algoritmo que encuentre un formato con penalización mínima. Demuestra la correctitud de tu algoritmo y haz un análisis de tiempo y espacio.}
+	\begin{equation}\label{f_ej3.2}
+	OPT(i) = 
+	\begin{cases}
+	\text{0,} &\text{$i > n$}\\
+	\text{$min_{j \in [i,...,n]}(FuncionP(l[i,j]) + OPT(j + 1))$,} &\text{$i \leq n$} \\
+	\end{cases}
+	\end{equation}
+	\begin{equation}\label{f_ej3.3}
+	FuncionP(l[i,j]) = 
+	\begin{cases}
+	\text{$\infty$,} &\text{\textbf{long\_linea} $< |W[i]| + ... + |W[j]|$}\\
+	\text{$($\textbf{long\_linea}$-(|W[i]| + ... + |W[j]|))^3$,} &\text{en otro caso} \\
+	\end{cases}
+	\end{equation}
 	\subsection{c) Modifica tu algoritmo para que funcione con una función de penalización de línea dada; la penalización de un formato sigue siendo la suma de las penalizaciones de sus líneas.}
 \section{Ejercicio 2}
 	\paragraph{} Considera un arreglo $A[1,...,n]$ con enteros positivos en sus entradas. Decimos que una pareja $(i,j)$ es un \textit{declive} si $i\leq j$ y $A[i]\geq A[j]$; la \textit{longitud} de $(i,j)$ es $A[i] - A[j]$. Diseña un algoritmo de tiempo y espacio $o(n^2)$ que calcule un declive de $A$ de longitud máxima (es $o$ pequeña, investiga ese concepto). Demuestra que tu algoritmo es correcto y haz el análisis de tiempo y espacio.\\

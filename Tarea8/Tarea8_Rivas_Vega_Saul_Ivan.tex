@@ -285,9 +285,47 @@ Adicional a la entrada el algoritmo ocupa algunas variables individuales para la
 			\includegraphics[width=\textwidth]{AlgCentros}
 		\end{center}
 	\end{figure}
-\pagebreak
+	\paragraph{Demostración.} Tomemos el algoritmo visto en clase y supongamos que es correcto:\\
+	\pagebreak
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[width=\textwidth]{alg_centros}
+		\end{center}
+	\end{figure}\\
+	Este algoritmo \textit{SelecCentrosRadio} como vimos en clase podemos suponer correctas las siguientes afirmaciones.
+	\paragraph{Afirmación 1.} Si el algoritmo construye un $C$ tal que $|C| \leq k$, entonces existen un conjunto con a lo más $k$ centros de $S$ cuyo radio de cobertura es a lo más $2r$.
+	\paragraph{Afirmación 2.} Si el algoritmo construye un $C$ tal que $|C| > k$, entonces no existe un conjunto con a lo más k centros de $S$ cuyo radio de cobertura es a lo más $r$.
+	\paragraph{} Revisemos que pasa cuando evaluamos en este algoritmo \textit{SelecCentrosRadio} con el radio de cobertura del óptimo, es decir $rc(C^*)$.
+	\paragraph{} Entonces el algoritmo no construyo un $C$ tal que $|C| > k$ puesto que de haberlo hecho hubiéramos concluido que no es posible tener dicho radio de cobertura $rc(C^*)$ ya que el algoritmo y la \textbf{Afirmación 2} son correctos.
+	\\ Por lo tanto concluimos que el algoritmo forma un conjunto $C$ tal que $|C| \leq k$ y además que el radio de cobertura será a lo más de 2 veces $rc(C^*)$.\\
+	Una invariante de este algoritmo vista en clase, es que para cualesquiera dos centros de $C$ se cumple que $c,c'\in C$ $dist(c,c') > 2r$. Esto es por que en efecto al seleccionar un elemento de $S$ como centro estamos descartando a todos los que se encuentre a una distancia de a lo más $2r$. En caso de que en una $i$-ésima iteración todas las ciudades restantes se encuentren a esa distancia, serán descartadas como posibles centros.
+	\paragraph{} Retomemos al primer algoritmo, a \textit{SelecCentros}, en este algoritmo se selecciona como siguiente centro aquel que maximice su distancia a cualquier centro en $C$, si esta fuera una distancia de a lo más $2r$ caeríamos en el caso discutido en el párrafo anterior, que en este punto no se requieren mas centros. Por lo tanto para seleccionar un siguiente centro para construir una  solución como la de \textit{SelecCentrosRadio} el siguiente centro debe estar a una distancia mayor que $2r$ a cualquier centro en $C$, es decir este algoritmo selecciona centros que cumplen con las mismas propiedades y formar el mismo $C$ o alguno que cumpla lo mismo.
+	\paragraph{} Por lo tanto como con el algoritmo visto en clase de \textit{SelecCentrosRadio} forma un conjunto de centros cuya distancia entre ellos es mayor a $2rc(C^*)$, y con el algoritmo de este ejercicio \textit{SelecCentros} vimos que en efecto selecciona centros que serán mayores a $2rc(C^*)$ y en el momento que la distancia máxima sea menor o igual a $2rc(C^*)$ significa que ya se cumple que todos los puntos están a lo más esa distancia de cualquier centro en $C$.\\
+	Finalmente como los centros seleccionados en ambos algoritmos cumplen con las mismas propiedades de distancia a las demás ciudades decimos que el algoritmo es correcto.
 \section{Ejercicio 4}
-\paragraph{} Escribe una versión recursiva del algoritmo probabilístico de corte mínimo visto en clase (basado en contracciones de aristas). Demuestra que el conjunto de aristas devuelto por el algoritmo es efectivamente un corte de la gráfica inicial.
+\paragraph{} Escribe una versión recursiva del algoritmo probabilístico de corte mínimo visto en clase (basado en contracciones de aristas). Demuestra que el conjunto de aristas devuelto por el algoritmo es efectivamente un corte de la gráfica inicial.\\
+\begin{algorithm}[H]
+	\KwData{Gráfica $G=(V,E)$.}
+	\KwResult{Corte de $G$.}
+	\SetAlgoLined
+	\tcc{Validamos si es que ya tenemos un corte.}
+	\If{$|V| = 2$}{
+		\tcc{Devolvemos el conjunto restante de aristas}
+		return $E$\;
+	}
+	\tcc{Tomamos un par de vertices aleatoriamente de $V$.}
+	$(u,v)=GetRandomV(V)$\;
+	\tcc{Comprimimos el grafo, es decir que eliminamos a $u$ y a $v$ de $V$, y en $E$ eliminamos las aristas de la forma $(v-u)$ y la forma $(u-v)$, posteriormente agregamos un nuevo nodo $w$ distinto a cualquier nodo en $V$ y en $E$ reemplazamos las aristas de la forma $(u,x)$ y de la forma $(v,y)$ para las aristas que conectaban a $u$ y $v$ con el resto de los nodos $x,y\in V$ por aristas de la forma $(w,x)$, $(w,y)$. Teniendo como resultado un grafo compreso $H$}
+	$H=ComprimeGrafo(G)$\;
+	\tcc{Llamamos recursivamente al algoritmo, ahora sobre $H$ para obtener un conjunto $E'$ de aristas de $H$ que representan un corte de $H$.}
+	$E' = GetCorte(H)$\;
+	\tcc{Recuperamos de $E'$ las aristas que son de $E$ y que fueron alteradas para incluir a $w$. En este proceso tomamos las aristas de $E'$ que tengan a $w$ y buscando en $E$ determinar si eran de $u$, o $v$. Este proceso no recupera las aristas de $(u,v)$ o $(v,u)$ puesto que no pertenecen al corte.}
+	$CorteR = RecuperarAristas(u,v,E,E')$\;
+	return $CorteR$\;
+	\caption{Algoritmo GetCorte.}
+\end{algorithm}
+\paragraph{Demostración.} Por contradicción.\\
+Supongamos que el conjunto de aristas devuelto no son aristas que pertenecen al conjunto de aristas de la gráfica original. Eso significa que en el momento en que modificamos las aristas no fue posible revertir dicha modificación. Puesto que lo que hacemos al llegar al caso base solo regresamos el conjunto de aristas sin modificarlas como se realiza en las demás invocaciones del algoritmo que no son el caso base. Si no hubo dicha modificación, las aristas son las mismas que la gráfica original y terminamos. En otro caso, las modificaciones no pudieron ser revertidas. Sin embargo las modificaciones consisten en simplemente eliminar aristas que no pertenecen al corte y reemplazar tanto a $u$ como $v$ en las aristas originales, y si tenemos que $w$ es distinto a cualquier otro nodo en $V$ y también como referencia a $E$ podemos entonces identificar las aristas que fueron modificadas y poder reemplazar a $w$ por el valor original, ya sea $u$ y $v$. Es decir que la modificación de reemplazar un nodo por otro tiene su operación inversa que es reemplazar dicho nodo por el nodo original. Y es precisamente el proceso que se realiza antes de devolver el Corte. Así pues las modificaciones son revertibles. Pero esto es una contradicción puesto que las operaciones no pueden ser revertibles y a la vez no. Finalmente decimos que el conjunto de aristas devuelto por el algoritmo es efectivamente un corte de la gráfica inicial.
 \section{Ejercicio 5}
 \paragraph{} Tenemos $n$ servidores que buscan coordinarse para ejecutar localmente la misma acción. De forma \textit{abstracta}, los servidores llegan a un \textit{consenso} sobre un bit, y ejecutan localmente la acción asociada. Por ejemplo, si el bit consensuado es 0, cada servidor hace \textit{rollback} en su base de datos local, pero si el bit consensuado es 1, cada servidor hace \textit{commit} localmente. Considera el siguiente algoritmo probabilístico para este problema:
 \begin{figure}[h]

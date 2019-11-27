@@ -120,13 +120,17 @@
 	\end{equation}
 	Finalmente como $f_1$ es mayor que $f_2$ y además podemos formar arreglos agregando las mismas 3 longitudes del ejemplo en ese orden decimos que el algoritmo produce \textit{formatos} con penalizaciones arbitrariamente grandes.
 	\subsection{b) Usa la técnica de programación dinámica para diseñar un algoritmo que encuentre un formato con penalización mínima. Demuestra la correctitud de tu algoritmo y haz un análisis de tiempo y espacio.}
+	
+	Tomemos la siguiente función para calcular el formato óptimo para las primeras $i$ palabras: 
 	\begin{equation}\label{f_ej3.2}
 	OPT(i) = 
 	\begin{cases}
-	\text{0,} &\text{$i > n$}\\
-	\text{$min_{j \in [i,...,n]}(FuncionP(l[i,j]) + OPT(j + 1))$,} &\text{$i \leq n$} \\
+	\text{0,} &\text{$i = 0$}\\
+	\text{$min_{j \in [1,...,i]}(OPT(j - 1) + FuncionP(l[j,i]))$,} &\text{en otro caso} \\
 	\end{cases}
 	\end{equation}
+	OPT toma la i-ésima palabra y busca la penalización mínima de colocarla en una linea que empieza en j donde j esta en [1,...,i], así se calcula la penalización de la línea l[j,i] y se suma al óptimo con las primeras (j-1) palabras, lo cual se calcula con OPT(j-1).\\
+	Donde la función de penalización $FuncionP$ esta definida como en el enunciado del ejercicio:
 	\begin{equation}\label{f_ej3.3}
 	FuncionP(l[i,j]) = 
 	\begin{cases}
@@ -134,6 +138,83 @@
 	\text{$($\textbf{long\_linea}$-(|W[i]| + ... + |W[j]|))^3$,} &\text{en otro caso} \\
 	\end{cases}
 	\end{equation}
+	Ahora con la función de optimización podemos escribir un algoritmo de programación dinámica como el siguiente:\\
+	\begin{algorithm}[H]\small
+		\KwData{Arreglo de palabras $W$, entero positivo $long\_linea$.}
+		\KwResult{Tupla $(minp, L)$ Que representa el valor de la penalización mínima y un arreglo de lineas $L$ donde cada elemento es una tupla $(i,j)$ que representa una linea que comienza con la palabra en $i$ y termina con la palabra en $j$.}
+		\SetAlgoLined
+		\tcc{Inicializamos un arreglo para guardar las penalizaciones minimas de tamaño $n$, donde $n=|W|$.}
+		$M= [ n ]$\;
+		\tcc{Inicializamos el caso base.}
+		$M[0]=0$\;
+		\tcc{Recorremos todos los valores desde 1 hasta $n$.}
+		\For{i = 1, i $\leq$ $n$}{
+			\tcc{Ahora para cada posición $i$ revisaremos cual es la mejor línea que incluye a $i$, que es revisar las líneas que comienzan en una posición $j\in [1,...,i]$.}
+			$minp = \infty$\;
+			\For{j = 1, j $\leq$ i}{
+				\tcc{Nos vamos quedando con el menor $minp$ que veamos, en cada iteración obtenemos la penalización de la línea más el formato óptimo de las primeras $j-1$ palabras.}
+				$minp=min(minp, M[j-1] + FuncionP(W, long\_linea, j, i))$
+			}
+			\tcc{Guardamos la menor penalización para las primeras $i$ palabras.}
+			$M[i] = minp$\;
+		}
+		
+		\tcc{Inicializamos el arreglo respuesta $L$.}
+		$L=[]$\;
+		\tcc{La menor penalización se encuentra en $M[n]$, ahora reconstruyamos la respuesta que es recorrer las posiciones que registraron el mínimo en cada $i$ desde el final, Recorreremos el arreglo con un while por que no es necesario recorrer todas las posiciones $i\in[1,...,n]$, sino solamente las que pertenecen a la respuesta óptima}
+		$i=n$\;
+		\While{i $>$ $0$}{
+			\For{j = 1, j $\leq$ i}{
+				\tcc{revisamos si para la línea que termina en la palabra $i$ empezar en $j$ fue lo óptimo}
+				\If{$M[j-1] + FuncionP(W, long\_linea, j, i)$ = $M[i]$}{
+					\tcc{En ese caso agregamos la tupla a la respuesta y además pasamos a la siguiente posición $i$}
+					$L \leftarrow (j,i)$\;
+					$i = j-1$\;
+					\tcc{Interrumpimos el actual ciclo For}
+					break\;
+				}	
+			}
+		}
+		
+		return ($M[n], L$)\;
+		\caption{Algoritmo FORMATODP.}
+	\end{algorithm}
+
+	\begin{algorithm}[H]
+		\KwData{Arreglo de palabras $W$, entero positivo $long\_linea$, indice de inicio $ini$, indice de fin $fin$.}
+		\KwResult{Un valor de penalización de incluir a las palabras de $W[ini,...,fin]$ en una sola línea.}
+		\SetAlgoLined
+		\tcc{Obtenemos la suma de las longitudes de las líneas.}
+		$sumaW = 0$\;
+		\For{i = $ini$, i $\leq$ $fin$}{
+			$sumaW = sumaW + |W[i]|$\;
+		}
+		\tcc{Evaluamos la condición para la penalización con respecto a $long\_linea$.}
+		\If{$sumaW > long\_linea$}{
+			\tcc{En este caso la suma de las longitudes es mayor a $long\_linea$.}
+			return $\infty$\;
+		}	
+		return ${(long\_linea - sumW)}^3$\;
+		\caption{Algoritmo FuncionP.}
+	\end{algorithm}
+
+	\subsubsection{Demostración de correctitud}
+	\paragraph{El algoritmo FuncionP termina.} El algoritmo termina pues las únicas operaciones que realiza son evaluaciones y asignaciones que podemos considerar constantes, con algunas en un ciclo For, el cual realizara $fin - ini + 1$ iteraciones, donde $ini, fin \in [1,...,n]$, por lo tanto la mayor cantidad de iteraciones que se realizan en una invocación del algoritmo es cuando $ini = 1$ y $fin = n$ y se harán $n - 1 + 1 = n$ iteraciones. Finalmente decimos que el algoritmo FuncionP termina después de $n$ iteraciones.\\
+	\paragraph{El algoritmo FORMATODP termina.} El algoritmo en una primera parte realiza dos ciclos For anidados, como estos recorren $n$ posiciones a lo mas podemos decir que realiza $n^2$ iteraciones, sin embargo en cada iteración ademas de realizar comparaciones y asignaciones de tiempo constante el algoritmo además llama a FuncionP, y como vimos en el párrafo anterior este termina después de a lo más $n$ iteraciones. Por lo tanto decimos que realiza $n^3$ operaciones. En una segunda parte de igual forma tiene dos ciclos anidados y de igual forma se recorren a lo mas las $n$ posiciones del arreglo pues $i$ empieza igual a $n$ y termina hasta llegar a $0$, puede brincar en una sola iteración, sin embargo también puede ser el caso que se recorran todas las $n$ posiciones, haciendo que los ciclos anidados de igual forma realicen $n^2$ iteraciones. En cada iteración se llama también a FuncionP, agregando otro factor de $n$. Entonces decimos que este segundo ciclo anidado realiza $n^3$ iteraciones. Finalmente el algoritmo después de recorrer los dos ciclos anidados tenemos que termina realizando $2(n^3)$ iteraciones. 
+	
+	\paragraph{El algoritmo FuncionP es correcto.} El algoritmo implementa la evaluación y los resultados de los dos casos que se presentaron en el enunciado del problema entonces corresponde a los valores que la función debe retornar.
+	\paragraph{El algoritmo FORMATODP es correcto.}
+	Por inducción.\\
+	\textbf{Invariante:} En el formato óptimo las líneas tienen como fin una palabra $i$, además tienen como inicio una palabra $j\in[1,...,i]$, y la $(j-1)-$ésima palabra es la palabra al final de la siguiente línea.\\
+	\textbf{Caso base:} Hay 0 palabras en el arreglo, el formato óptimo no contempla ninguna línea, la penalización es 0.
+	\textbf{Hipótesis de inducción:} El algoritmo obtiene el inicio $j\in[1,...,i]$ con el que se obtiene el formato de penalización mínima que incluye a la línea $l[j,i]$.
+	Suponer verdadero hasta la $i$-ésima palabra, esta $i$-ésima palabra debe pertenecer a alguna línea en el formato final, dicha linea puede empezar y terminar en $i$, siendo una línea con solo una palabra, formalmente la linea es de la forma $l[j,i]$ donde $j\in[1,...,i]$, por nuestra suposición inicial si tomamos a algún $j$ como nuestro inicio, ya sabemos cual es el formato de penalización mínima que incluye a la línea que termina en $j-1$. Por lo tanto debemos obtener solamente aquel $j$ tal que minimice la suma del formato óptimo con las primeras $j-1$ palabras mas la penalización de la línea $l[j,i]$. Que es recorrer todos los $j\in[1,...,i]$ para obtener el mínimo de todos. Finalmente como es exactamente lo que realiza el algoritmo decimos que el algoritmo FORMATODP es correcto.
+	\subsubsection{Análisis de tiempo.}
+	\paragraph{El algoritmo FuncionP tiene complejidad $O(n)$.} Como vimos en la sección anterior el algoritmo solo realiza un ciclo con $n$ iteraciones ademas de operaciones como asignaciones y evaluaciones que podemos considerar de tiempo constante. Por lo tanto decimos que el algoritmo es de orden $O(n)$.
+	\paragraph{El algoritmo FormatoDP tiene complejidad $O(n^3)$.} Como vimos en la sección anterior el algoritmo termina después de realizar $2n^3$ iteraciones adicionalmente se realizan operaciones como asignaciones y evaluaciones que podemos considerar de tiempo $O(1)$. Por lo tanto decimos que el algoritmo es de orden $O(2n^3)$ y tomando el factor dominante finalmente decimos que la complejidad es $O(n^3)$.
+	\subsubsection{Análisis de espacio.}
+	\paragraph{El algoritmo FuncionP tiene espacio de orden $O(1)$.} Adicional a la entrada el algoritmo solo hace uso de una variable $sumaW$ e $i$ para el ciclo. Dichas variables no ocupan mas espacio conforme crece $n$, por lo tanto se mantiene constante y finalmente decimos que el algoritmo ocupa espacio de orden $O(1)$.
+	\paragraph{El algoritmo FORMATODP ocupa espacio de orden $O(n)$.} Adicional a la entrada el algoritmo solo usa un arreglo de $n$ posiciones para guardar los mínimos y un arreglo de tuplas $L$ que en el caso que cada palabra este en su propia linea, este será de tamaño $2n$, pues se guarda una variable de inicio y una de fin. Por lo tanto el algoritmo ocupa $3n$ mas unas variables constantes de asignación o para recorrer ciclos. Finalmente decimos que el algoritmo ocupa espacio de orden $O(n)$.
 	\subsection{c) Modifica tu algoritmo para que funcione con una función de penalización de línea dada; la penalización de un formato sigue siendo la suma de las penalizaciones de sus líneas.}
 \section{Ejercicio 2}
 	\paragraph{} Considera un arreglo $A[1,...,n]$ con enteros positivos en sus entradas. Decimos que una pareja $(i,j)$ es un \textit{declive} si $i\leq j$ y $A[i]\geq A[j]$; la \textit{longitud} de $(i,j)$ es $A[i] - A[j]$. Diseña un algoritmo de tiempo y espacio $o(n^2)$ que calcule un declive de $A$ de longitud máxima (es $o$ pequeña, investiga ese concepto). Demuestra que tu algoritmo es correcto y haz el análisis de tiempo y espacio.\\

@@ -326,6 +326,7 @@ Adicional a la entrada el algoritmo ocupa algunas variables individuales para la
 \end{algorithm}
 \paragraph{Demostración.} Por contradicción.\\
 Supongamos que el conjunto de aristas devuelto no son aristas que pertenecen al conjunto de aristas de la gráfica original. Eso significa que en el momento en que modificamos las aristas no fue posible revertir dicha modificación. Puesto que lo que hacemos al llegar al caso base solo regresamos el conjunto de aristas sin modificarlas como se realiza en las demás invocaciones del algoritmo que no son el caso base. Si no hubo dicha modificación, las aristas son las mismas que la gráfica original y terminamos. En otro caso, las modificaciones no pudieron ser revertidas. Sin embargo las modificaciones consisten en simplemente eliminar aristas que no pertenecen al corte y reemplazar tanto a $u$ como $v$ en las aristas originales, y si tenemos que $w$ es distinto a cualquier otro nodo en $V$ y también como referencia a $E$ podemos entonces identificar las aristas que fueron modificadas y poder reemplazar a $w$ por el valor original, ya sea $u$ y $v$. Es decir que la modificación de reemplazar un nodo por otro tiene su operación inversa que es reemplazar dicho nodo por el nodo original. Y es precisamente el proceso que se realiza antes de devolver el Corte. Así pues las modificaciones son revertibles. Pero esto es una contradicción puesto que las operaciones no pueden ser revertibles y a la vez no. Finalmente decimos que el conjunto de aristas devuelto por el algoritmo es efectivamente un corte de la gráfica inicial.
+\pagebreak
 \section{Ejercicio 5}
 \paragraph{} Tenemos $n$ servidores que buscan coordinarse para ejecutar localmente la misma acción. De forma \textit{abstracta}, los servidores llegan a un \textit{consenso} sobre un bit, y ejecutan localmente la acción asociada. Por ejemplo, si el bit consensuado es 0, cada servidor hace \textit{rollback} en su base de datos local, pero si el bit consensuado es 1, cada servidor hace \textit{commit} localmente. Considera el siguiente algoritmo probabilístico para este problema:
 \begin{figure}[h]
@@ -338,4 +339,102 @@ Supongamos que el conjunto de aristas devuelto no son aristas que pertenecen al 
 	\item Demuestra que el número esperado de iteraciones para ejecutar la acción es $O(2^n)$. Tip: Modela el problema con una variable aleatoria con distribución geométrica.
 	\item ¿Cuál es el número esperado de iteraciones si en cada una de ellas los servidores obtienen su $r-$ésimo bit, $b_r$, llamando una función \textbf{shared\_random\_bit($r$)} que devuelve el mismo $r-$ésimo bit a todos los servidores con probabilidad $p$, para alguna constante $0 < p < 1$?
 \end{enumerate}
+\subsection{Demuestra que el número esperado de iteraciones para ejecutar la acción es $O(2^n)$.}
+Modelemos el problema de la siguiente manera; Siguiendo el algoritmo vemos que termina en el momento en que todos los servidores obtienen el mismo bit. El bit lo obtiene cada servidor de manera aleatoria y con probabilidad, es decir que la probabilidad de que cierta combinación resultante de bits tiene la misma probabilidad de salir como cualquier otra.\\ Como ejemplo en 3 servidores las posibles combinaciones son:
+000, 001, 010, 011, 100, 101, 110 y 111, son todas las posibles y cada una tienen la misma probabilidad de salir en cada iteración. Sin embargo en el momento que salga 000 o 111 los servidores el algoritmo termina.\\
+En general para $n$ servidores existen $2^n$ combinaciones y solo con 2 el algoritmo termina. Si en una iteración llamamos como éxito al evento de que salga alguna de estas 2 combinaciones, y como fracaso a que salga cualquier otra podemos modelar el problema con una variable aleatoria $X$ con distribución geométrica.\\
+$X$ es el número de iteraciones hasta el primer evento de éxito, es decir cuando sale alguna de las 2 combinaciones donde los bits son iguales. Esto es posible pues cada iteración es independiente, solo existe el evento de éxito y el de fracaso y la probabilidad de un evento de éxito es la misma en cada iteración.
+Dicha probabilidad se puede obtener de todos los resultados posibles en una iteración, los cuales son $2^n$ y solo $2$ son de éxito, como la probabilidad es uniforme podemos decir entonces que la probabilidad de que una iteración sea exitosa es de $\frac{2}{2^n} = \frac{1}{2^{n-1}}$ .\\
+Ahora la probabilidad de que la primera iteración del algoritmo sea exitosa es $\frac{1}{2^{n-1}}$, la probabilidad de éxito hasta la segunda iteración es igual a $(1 - \frac{1}{2^{n-1}})\times(\frac{1}{2^{n-1}})$ que es la probabilidad de fallar en la primera iteración y acertar en la segunda. La probabilidad de éxito hasta la tercera iteración es igual a $(1 - \frac{1}{2^{n-1}})^2\times(\frac{1}{2^{n-1}})$, que es haber fallado en las primeras 2 iteraciones y acertar en la tercera.\\
+En general la probabilidad de que el número de iteraciones hasta el primer evento de éxito, es decir $X$, sea igual a un entero positivo $k$ es:\\
+\begin{equation}
+	P(X=k)= (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})
+\end{equation}
+ Ahora el valor esperado esta definido como la suma del producto de la probabilidad de cada evento por el valor de dicho evento. En nuestro caso si queremos el valor esperado de $X$, es decir el valor esperado de iteraciones hasta que los servidores coincidan y el algoritmo termine, es la suma:
+ \begin{equation}\label{ec11}
+ \begin{split}
+ E(X) &= \sum_{k=1}^{\infty}{k \times P(X=k)} \\
+ &= \sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ \end{split}
+ \end{equation}
+ La ecuación \ref{ec11} puede ser desarrollada de la siguiente forma equivalente:
+ \begin{equation}\label{ec12}
+ \begin{split}
+ E(X) &= \sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ &= (1 \times (1 - \frac{1}{2^{n-1}})^{1-1} \times (\frac{1}{2^{n-1}})) + \sum_{k=2}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ &= (1 \times (1 - \frac{1}{2^{n-1}})^{0} \times (\frac{1}{2^{n-1}})) + \sum_{k=2}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ &= (1 \times 1 \times (\frac{1}{2^{n-1}})) + \sum_{k=2}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ &= (\frac{1}{2^{n-1}}) + \sum_{k=2}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}\\
+ &= (\frac{1}{2^{n-1}}) + \sum_{k=1}^{\infty}{(k+1) \times (1 - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})}
+ \end{split}
+ \end{equation}
+ Ahora para simplificar la ecuación multipliquemos por $(1 - \frac{1}{2^{n-1}})$  a la ecuación \ref{ec11}.
+ \begin{equation}\label{ec13}
+ \begin{split}
+ E(X) \times (1 - \frac{1}{2^{n-1}}) &= [\sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k-1} \times (\frac{1}{2^{n-1}})}] \times (1 - \frac{1}{2^{n-1}}) \\
+ &= \sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})}
+ \end{split}
+ \end{equation}
+ Podemos ahora restarle a la ecuación \ref{ec12} la ecuación \ref{ec13}.\\
+ \begin{equation}\label{ec14}
+ \begin{split}
+ E(X) - (E(X) \times (1 - \frac{1}{2^{n-1}})) &=[(\frac{1}{2^{n-1}}) + \sum_{k=1}^{\infty}{(k+1) \times (1  - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})}]\\
+ & - [\sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})}] \\
+ & = (\frac{1}{2^{n-1}}) + [(\sum_{k=1}^{\infty}{(k+1) \times (1  - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})}) - \\
+ & (\sum_{k=1}^{\infty}{k \times (1 - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})})]\\
+ & = (\frac{1}{2^{n-1}}) +  \\
+ 	& \sum_{k=1}^{\infty}{[((k+1) \times (1  - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}})) - (k \times (1 - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}}))] }\\
+ & = (\frac{1}{2^{n-1}}) + \sum_{k=1}^{\infty}{(k+1 - k) \times (1  - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}}) }\\
+ & = (\frac{1}{2^{n-1}}) + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k} \times (\frac{1}{2^{n-1}}) }\\
+ & = (\frac{1}{2^{n-1}}) + [(\frac{1}{2^{n-1}}) \times \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ & = (\frac{1}{2^{n-1}}) \times  [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ E(X) - (E(X) \times (1 - \frac{1}{2^{n-1}})) & = (\frac{1}{2^{n-1}}) \times  [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ E(X) - E(X) + E(X) \times (\frac{1}{2^{n-1}}) & = (\frac{1}{2^{n-1}}) \times  [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ E(X) \times (\frac{1}{2^{n-1}}) & = (\frac{1}{2^{n-1}}) \times  [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ (2^{n-1}) \times E(X) \times (\frac{1}{2^{n-1}}) & = (2^{n-1}) \times (\frac{1}{2^{n-1}}) \times  [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ E(X) & =   [1 + \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}]\\
+ \end{split}
+ \end{equation}
+ \paragraph{} Como resultado de la ecuación \ref{ec14} tenemos una serie geométrica la cual podemos desarrollar por separado:\\
+ \begin{equation}\label{ec15}
+ \begin{split}
+ Sn & = \sum_{k=1}^{\infty}{(1  - \frac{1}{2^{n-1}})^{k}}\\
+ & = \sum_{k=1}^{\infty}{(\frac{2^{n-1}}{2^{n-1}}  - \frac{1}{2^{n-1}})^{k}}\\
+ & = \sum_{k=1}^{\infty}{(\frac{2^{n-1} - 1}{2^{n-1}})^{k}}\\
+ & = \sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k}}{(2^{n-1})^{k}}}\\
+ \end{split}
+ \end{equation}
+Ahora multipliquemos a \ref{ec15} por $2^{n-1}$\\
+\begin{equation}\label{ec16}
+\begin{split}
+Sn\times (2^{n-1})& = [\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k}}{(2^{n-1})^{k}}}] \times (2^{n-1})\\
+Sn\times (2^{n-1})& = [\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k} \times (2^{n-1}) }{(2^{n-1})^{k}}}]\\
+Sn\times (2^{n-1})& = [\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k}}{(2^{n-1})^{k-1}}}]\\
+Sn\times (2^{n-1})& = [\sum_{k=0}^{\infty}{\frac{(2^{n-1} - 1)^{k+1}}{(2^{n-1})^{k}}}]\\
+Sn\times (2^{n-1})& = (\frac{(2^{n-1} - 1)^{0+1}}{(2^{n-1})^{0}}) + [\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k+1}}{(2^{n-1})^{k}}}]\\
+Sn\times (2^{n-1})& = (2^{n-1} - 1) + [\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k+1}}{(2^{n-1})^{k}}}]\\
+Sn\times (2^{n-1})& = (2^{n-1} - 1) + [(\sum_{k=1}^{\infty}{\frac{(2^{n-1} - 1)^{k}}{(2^{n-1})^{k}}})\times (2^{n-1} - 1)]\\
+Sn\times (2^{n-1})& = (2^{n-1} - 1) + [(Sn)\times (2^{n-1} - 1)]\\
+Sn\times (2^{n-1})& = (2^{n-1} - 1) \times [1 + (Sn)]\\
+Sn\times [\frac{(2^{n-1})}{(2^{n-1} - 1)}]& = 1 + (Sn)\\
+Sn\times [\frac{(2^{n-1})}{(2^{n-1} - 1)}] - (Sn)& = 1\\
+Sn\times [\frac{(2^{n-1})}{(2^{n-1} - 1)} - 1]& = 1\\
+Sn\times [\frac{(2^{n-1}) - (2^{n-1} - 1) }{(2^{n-1} - 1)}]& = 1\\
+Sn & = 1 / [\frac{(2^{n-1}) - (2^{n-1} - 1) }{(2^{n-1} - 1)}]\\
+Sn & = [\frac{(2^{n-1} - 1)}{(2^{n-1}) - (2^{n-1} - 1)}]\\
+Sn & = [\frac{(2^{n-1} - 1)}{(2^{n-1} - 2^{n-1} + 1)}]\\
+Sn & = [\frac{(2^{n-1} - 1)}{1}]\\
+Sn & = 2^{n-1} - 1\\
+\end{split}
+\end{equation}
+Ahora sustituimos el valor resultante de la ecuación \ref{ec16} en la ecuación \ref{ec14}.\\
+\begin{equation}
+\begin{split}
+E(X) & =   [1 + Sn]\\
+E(X) & =   [1 + (2^{n-1} - 1)]\\
+E(X) & =   [1 + 2^{n-1} - 1]\\
+E(X) & =   2^{n-1}\\
+\end{split}
+\end{equation}
+Por lo tanto el valor esperado de $X$, que es el que buscamos, es de orden $O(2^{n-1})$, lo que también es $O((1/2) \times 2^{n})$ y finalmente $O(2^n)$.
 \end{document}  

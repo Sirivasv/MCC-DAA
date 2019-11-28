@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.5)  27 NOV 2019 18:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.9.5)  27 NOV 2019 20:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1096,15 +1096,69 @@ Underfull \hbox (badness 10000) in paragraph at lines 429--431
 
  []
 
-[20] [21] (./Tarea8_Rivas_Vega_Saul_Ivan.aux
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 438--440
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 441--443
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 445--447
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 452--454
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 458--460
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
+
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 470--472
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 497--498
+
+ []
+
+[23] [24]
+Overfull \vbox (6.41476pt too high) has occurred while \output is active []
+
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 528--530
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 536--538
+
+ []
+
+[26] (./Tarea8_Rivas_Vega_Saul_Ivan.aux
 LaTeX Info: Redefining \. on input line 8.
 LaTeX Info: Redefining \% on input line 8.
 ) ) 
 Here is how much of TeX's memory you used:
- 17000 strings out of 494788
- 314579 string characters out of 6177223
- 390818 words of memory out of 5000000
- 19983 multiletter control sequences out of 15000+600000
+ 17009 strings out of 494788
+ 314637 string characters out of 6177223
+ 390908 words of memory out of 5000000
+ 19992 multiletter control sequences out of 15000+600000
  17782 words of font info for 68 fonts, out of 8000000 for 9000
  85 hyphenation exceptions out of 8191
  55i,20n,54p,1488b,614s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1128,10 +1182,10 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist
 type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmtt10.pfb>
-Output written on Tarea8_Rivas_Vega_Saul_Ivan.pdf (21 pages, 332103 bytes).
+Output written on Tarea8_Rivas_Vega_Saul_Ivan.pdf (26 pages, 339987 bytes).
 PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 114 compressed objects within 2 object streams
+ 179 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  28 words of extra memory for PDF output out of 10000 (max. 10000000)
 

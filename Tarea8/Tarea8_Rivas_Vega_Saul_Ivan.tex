@@ -436,5 +436,112 @@ E(X) & =   [1 + 2^{n-1} - 1]\\
 E(X) & =   2^{n-1}\\
 \end{split}
 \end{equation}
-Por lo tanto el valor esperado de $X$, que es el que buscamos, es de orden $O(2^{n-1})$, lo que también es $O((1/2) \times 2^{n})$ y finalmente $O(2^n)$.
+Por lo tanto el valor esperado de $X$, que es el que buscamos, es de orden $O(2^{n-1})$, lo que también es $O((1/2) \times 2^{n})$ y finalmente $O(2^n)$.\\
+\subsection{¿Cuál es el número esperado de iteraciones si en cada una de ellas los servidores obtienen su $r-$ésimo bit, $b_r$, llamando una función \textbf{shared\_random\_bit($r$)} que devuelve el mismo $r-$ésimo bit a todos los servidores con probabilidad $p$, para alguna constante $0 < p < 1$?}
+\paragraph{} En este caso la probabilidad de éxito en una iteración es constante con respecto a $n$, es decir que es independiente de $n$, a diferencia que en el caso anterior donde con mas servidores la probabilidad es menor pues era de $\frac{1}{2^{n-1}}$.\\
+Ahora con respecto a nuestra modelación anterior con la variable aleatoria $X$ los cambios se ven reflejados en la probabilidad de que el número de iteraciones hasta el primer evento de éxito, es decir $X$, sea igual a un entero positivo $k$ es:\\
+\begin{equation}
+P(X=k)= (1 - p)^{k-1} \times p
+\end{equation}
+Y a su vez el valor esperado ahora es de la forma:\\
+\begin{equation}\label{ec19}
+\begin{split}
+E(X) &= \sum_{k=1}^{\infty}{k \times P(X=k)} \\
+&= \sum_{k=1}^{\infty}{k \times (1 - p)^{k-1} \times p}\\
+\end{split}
+\end{equation}
+En general el valor esperado para una variable aleatoria con distribución geométrica como es el caso de $X$ es:\\
+\begin{equation}\label{ec20}
+\begin{split}
+E(X) &= \frac{1}{p} \\
+\end{split}
+\end{equation}
+Lo cual es la respuesta para el ejercicio. Finalmente realizaremos la demostración de dicha afirmación.\\
+\paragraph{Demostración.}
+Partamos de la ecuación \ref{ec19} desarrollandola como en el ejercicio anterior.\\
+\begin{equation}\label{ec23}
+\begin{split}
+E(X) &= \sum_{k=1}^{\infty}{k \times (1 - p)^{k-1} \times p}\\
+&= \sum_{k=0}^{\infty}{(k+1) \times (1 - p)^{k} \times p}\\
+&= (0+1)\times (1 - p)^{0}\times p + \sum_{k=1}^{\infty}{(k+1) \times (1 - p)^{k} \times p}\\
+&= (1)\times 1 \times p + \sum_{k=1}^{\infty}{(k+1) \times (1 - p)^{k} \times p}\\
+&= p + \sum_{k=1}^{\infty}{(k+1) \times (1 - p)^{k} \times p}\\
+\end{split}
+\end{equation}
+Ahora si multiplicamos la ecuación \ref{ec19} por $(1-p)$, tenemos: \\
+\begin{equation}\label{ec21}
+\begin{split}
+E(X) \times (1-p) &= [\sum_{k=1}^{\infty}{k \times (1 - p)^{k-1} \times p}] \times (1-p)\\
+&= [\sum_{k=1}^{\infty}{k \times (1 - p)^{k-1} \times p}] \times (1-p)\\
+&= \sum_{k=1}^{\infty}{k \times (1 - p)^{k-1} \times p} \times (1-p)\\
+&= \sum_{k=1}^{\infty}{k \times (1 - p)^{k} \times p}\\
+\end{split}
+\end{equation}
+Ahora restemos la ecuación \ref{ec21} a la ecuación \ref{ec23}.
+\begin{equation}\label{ec22}
+\begin{split}
+E(X) - (E(X) \times (1-p)) &= [p + \sum_{k=1}^{\infty}{(k+1) \times (1 - p)^{k} \times p}] - [\sum_{k=1}^{\infty}{k \times (1 - p)^{k} \times p}]\\
+&= p + [\sum_{k=1}^{\infty}{(k+1) \times (1 - p)^{k} \times p} - \sum_{k=1}^{\infty}{k \times (1 - p)^{k} \times p}]\\
+&= p + [\sum_{k=1}^{\infty}{(k+1-k) \times (1 - p)^{k} \times p}]\\
+&= p + [\sum_{k=1}^{\infty}{(1) \times (1 - p)^{k} \times p}]\\
+&= p + [\sum_{k=1}^{\infty}{(1 - p)^{k} \times p}]\\
+&= p +  p \times [\sum_{k=1}^{\infty}{(1 - p)^{k}}]\\
+&= p \times(1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+E(X) - (E(X) \times (1-p)) &= p \times(1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+E(X) - (E(X) - E(X) \times p ) &= p \times(1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+E(X) - E(X) + E(X) \times p  &= p \times(1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+(\frac{1}{p}) \times E(X) \times p  &= (\frac{1}{p}) \times p \times(1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+E(X)  &= (1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+\end{split}
+\end{equation}
+\paragraph{} Como resultado de la ecuación \ref{ec22} tenemos una serie geométrica la cual podemos desarrollar por separado:\\
+\begin{equation}\label{ecSn2}
+\begin{split}
+Sn & = \sum_{k=1}^{\infty}{(1  - p)^k}\\
+& = \sum_{k=1}^{\infty}{(\frac{p}{p} - \frac{p^2}{p})^k}\\
+& = \sum_{k=1}^{\infty}{(\frac{p-p^2}{p})^k}\\
+\end{split}
+\end{equation}
+Ahora multipliquemos la ecuación \ref{ecSn2} por $p$.
+\begin{equation}\label{ecSn3}
+\begin{split}
+Sn \times p & = [\sum_{k=1}^{\infty}{(\frac{p-p^2}{p})^k}] \times p\\
+& = [\sum_{k=1}^{\infty}{\frac{(p-p^2)^k}{(p)^k}}] \times p\\
+& = \sum_{k=1}^{\infty}{\frac{(p-p^2)^k \times p}{(p)^k}}\\
+& = \sum_{k=1}^{\infty}{\frac{(p-p^2)^k}{(p)^{k-1}}}\\
+& = [\sum_{k=1}^{\infty}{\frac{(p-p^2)^{k-1}}{(p)^{k-1}}}] \times (p-p^2)\\
+& = [\sum_{k=0}^{\infty}{\frac{(p-p^2)^{k}}{(p)^{k}}}] \times (p-p^2)\\
+& = [\frac{(p-p^2)^{0}}{(p)^{0}} + \sum_{k=1}^{\infty}{\frac{(p-p^2)^{k}}{(p)^{k}}}] \times (p-p^2)\\
+& = [\frac{1}{1} + \sum_{k=1}^{\infty}{\frac{(p-p^2)^{k}}{(p)^{k}}}] \times (p-p^2)\\
+& = [1 + \sum_{k=1}^{\infty}{\frac{(p-p^2)^{k}}{(p)^{k}}}] \times (p-p^2)\\
+& = [1 + Sn] \times (p-p^2)\\
+Sn \times p & = [1 + Sn] \times (p-p^2)\\
+Sn \times p \times \frac{1}{(p-p^2)} & = 1 + Sn\\
+Sn  \times \frac{p}{(p-p^2)} - Sn & = 1\\
+Sn  \times(\frac{p}{(p-p^2)} - 1) & = 1\\
+Sn  \times(\frac{p}{(p-p^2)} - \frac{(p-p^2)}{(p-p^2)}) & = 1\\
+Sn  \times(\frac{p- (p-p^2)}{(p-p^2)}) & = 1\\
+Sn  \times(\frac{p- p+p^2}{(p-p^2)}) & = 1\\
+Sn  \times(\frac{p^2}{(p-p^2)}) & = 1\\
+Sn  & = \frac{(p-p^2)}{p^2}\\
+\end{split}
+\end{equation}
+Continuemos desarrollando la Serie de la ecuación \ref{ecSn3}.\\
+\begin{equation}\label{ecSn4}
+\begin{split}
+Sn  & = \frac{(p-p^2)}{p^2}\\
+Sn  & = \frac{(p)}{p^2} - \frac{(p^2)}{p^2}\\
+Sn  & = \frac{1}{p} - 1\\
+\end{split}
+\end{equation}
+Y sustituyendo el resultado de la ecuación \ref{ecSn4} en la ecuación \ref{ec22} Tenemos:\\
+\begin{equation}\label{ecFnt}
+\begin{split}
+E(X)  &= (1 + [\sum_{k=1}^{\infty}{(1 - p)^{k}}])\\
+E(X)  &= (1 + [Sn])\\
+E(X)  &= (1 + [\frac{1}{p} - 1])\\
+E(X)  &= (1 + \frac{1}{p} - 1)\\
+E(X)  &= \frac{1}{p}\\
+\end{split}
+\end{equation}
 \end{document}  
